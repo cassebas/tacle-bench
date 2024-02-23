@@ -268,6 +268,9 @@
   between "versions 1" and the combined program, version 2.
 
   \**********************************************************************/
+#include <stdint.h>
+#include "kprintf.h"
+
 
 #include "wcclibm.h"
 #include "wccfile.h"
@@ -2501,8 +2504,19 @@ int susan_return( void )
 
 int main( void )
 {
+  uintptr_t cycles1, cycles2, cycles3;
+
+  kprintf("susan start\n");
   susan_init();
+  asm volatile ("csrr %0, mcycle" : "=r" (cycles1));
   susan_main();
+  asm volatile ("csrr %0, mcycle" : "=r" (cycles2));
+  susan_main();
+  asm volatile ("csrr %0, mcycle" : "=r" (cycles3));
+  kprintf("susan stop\n");
+
+  kprintf("susan cycles cold cache %ld\n", cycles2 - cycles1);
+  kprintf("susan cycles warm cache %ld\n", cycles3 - cycles2);
 
   return susan_return();
 }

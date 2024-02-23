@@ -34,6 +34,8 @@
 /*
   Forward declaration of functions
 */
+#include <stdint.h>
+#include "kprintf.h"
 
 void adpcm_dec_decode( int );
 int adpcm_dec_filtez( int *bpl, int *dlt );
@@ -703,8 +705,19 @@ void _Pragma( "entrypoint" ) adpcm_dec_main( void )
 
 int main( void )
 {
+  uintptr_t cycles1, cycles2, cycles3;
+
+  kprintf("adpcm_dec start\n");
   adpcm_dec_init();
+  asm volatile ("csrr %0, mcycle" : "=r" (cycles1));
   adpcm_dec_main();
+  asm volatile ("csrr %0, mcycle" : "=r" (cycles2));
+  adpcm_dec_main();
+  asm volatile ("csrr %0, mcycle" : "=r" (cycles3));
+  kprintf("adpcm_dec stop\n");
+
+  kprintf("adpcm_dec cycles cold cache %ld\n", cycles2 - cycles1);
+  kprintf("adpcm_dec cycles warm cache %ld\n", cycles3 - cycles2);
 
   return ( adpcm_dec_return() );
 }

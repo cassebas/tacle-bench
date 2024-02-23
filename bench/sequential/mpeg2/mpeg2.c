@@ -43,6 +43,8 @@
     design.
 
 */
+#include <stdint.h>
+#include "kprintf.h"
 
 
 /*
@@ -13205,8 +13207,19 @@ void _Pragma ( "entrypoint" ) mpeg2_main( void )
 
 int main( void )
 {
+  uintptr_t cycles1, cycles2, cycles3;
+
+  kprintf("mpeg2 start\n");
   mpeg2_init();
+  asm volatile ("csrr %0, mcycle" : "=r" (cycles1));
   mpeg2_main();
+  asm volatile ("csrr %0, mcycle" : "=r" (cycles2));
+  mpeg2_main();
+  asm volatile ("csrr %0, mcycle" : "=r" (cycles3));
+  kprintf("mpeg2 stop\n");
+
+  kprintf("mpeg2 cycles cold cache %ld\n", cycles2 - cycles1);
+  kprintf("mpeg2 cycles warm cache %ld\n", cycles3 - cycles2);
 
   return ( mpeg2_return() - ( -116 ) != 0 );
 }
