@@ -26,6 +26,7 @@
 #include "keyword.h"
 #include "kernobj.h"
 #include "tm_data.h"
+#include <stdint.h>
 
 /* Special value for TC/TM mail to be used only     */
 /* telemetry is ready                               */
@@ -40,7 +41,7 @@ extern uint_least8_t EXTERNAL event_queue_length;
 
 extern unsigned char EXTERNAL *telemetry_pointer;
 extern unsigned char EXTERNAL *telemetry_end_pointer;
-extern unsigned int  EXTERNAL free_slot_index;
+extern unsigned int EXTERNAL free_slot_index;
 
 extern unsigned char EXTERNAL read_memory_checksum;
 /* Checksum to be sent at the end of Read Memory sequence. */

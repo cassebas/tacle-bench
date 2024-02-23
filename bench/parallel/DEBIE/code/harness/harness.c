@@ -61,6 +61,7 @@
 
 */
 
+#include <stdlib.h>
 #if defined(TRACE_HARNESS)
 #include <stdio.h>
 #endif
@@ -91,7 +92,7 @@ void CreateTask ( task_info_t EXTERNAL *new_task )
 /*                   as an error indication.                                 */
 {
   #if defined(TRACE_HARNESS)
-  printf ( "CreateTask %d\n", new_task->rtx_task_number );
+  kprintf ( "CreateTask %d\n", new_task->rtx_task_number );
   #endif
 
   switch ( new_task->rtx_task_number ) {
@@ -117,7 +118,7 @@ void CreateTask ( task_info_t EXTERNAL *new_task )
     default:
 
       #if defined(TRACE_HARNESS)
-      printf ( "CreateTask: unknown task number\n" );
+      kprintf ( "CreateTask: unknown task number\n" );
       #endif
 
       break;
@@ -136,7 +137,7 @@ void WaitInterval( unsigned char time )
 /*                   software_error register.                                */
 {
   #if defined(TRACE_HARNESS)
-  printf ( "WaitInterval %d\n", time );
+  kprintf ( "WaitInterval %d\n", time );
   #endif
 }
 
@@ -152,7 +153,7 @@ void WaitTimeout( unsigned char time ) COMPACT REENTRANT_FUNC
 /*                   software_error register.                                */
 {
   #if defined(TRACE_HARNESS)
-  printf ( "WaitTimeout %d\n", time );
+  kprintf ( "WaitTimeout %d\n", time );
   #endif
 }
 
@@ -168,7 +169,7 @@ void SetTimeSlice( unsigned int time_slice )
 /*                   the software_error register.                            */
 {
   #if defined(TRACE_HARNESS)
-  printf ( "SetTimeSlice %d\n", time_slice );
+  kprintf ( "SetTimeSlice %d\n", time_slice );
   #endif
 }
 
@@ -183,7 +184,7 @@ static unsigned int ad_converting = 0;
 void ShortDelay ( uint_least8_t delay_loops )
 {
   #if defined(TRACE_HARNESS)
-  printf ( "ShortDelay %d\n", delay_loops );
+  kprintf ( "ShortDelay %d\n", delay_loops );
   #endif
 
   ad_converting = 0;
@@ -206,7 +207,7 @@ unsigned char isr_send_message (
 /*                    telemetry.                                            */
 {
   #if defined(TRACE_HARNESS)
-  printf ( "isr_send_message to %d, message %d = 0x%x\n",
+  kprintf ( "isr_send_message to %d, message %d = 0x%x\n",
            mailbox, message, message );
   #endif
   SendTaskMail ( mailbox, message, 0 );
@@ -230,7 +231,7 @@ void AttachInterrupt( unsigned char ISR_VectorNumber )
 /*                   telemetry as an error indication.                       */
 {
   #if defined(TRACE_HARNESS)
-  printf ( "AttachInterrupt %d\n", ISR_VectorNumber );
+  kprintf ( "AttachInterrupt %d\n", ISR_VectorNumber );
   #endif
 }
 
@@ -245,7 +246,7 @@ void EnableInterrupt( unsigned char ISR_VectorNumber )
 /*                   telemetry as an error indication.                       */
 {
   #if defined(TRACE_HARNESS)
-  printf ( "EnableInterrupt %d\n", ISR_VectorNumber );
+  kprintf ( "EnableInterrupt %d\n", ISR_VectorNumber );
   #endif
 }
 
@@ -260,7 +261,7 @@ void DisableInterrupt( unsigned char ISR_VectorNumber )
 /*                   telemetry as an error indication.                       */
 {
   #if defined(TRACE_HARNESS)
-  printf ( "DisableInterrupt %d\n", ISR_VectorNumber );
+  kprintf ( "DisableInterrupt %d\n", ISR_VectorNumber );
   #endif
 }
 
@@ -279,7 +280,7 @@ signed char SetInterruptMask( unsigned char ISR_MaskNumber )
 /* Algorithm      : RTX syntax is used.                                      */
 {
   #if defined(TRACE_HARNESS)
-  printf ( "SetInterruptMask 0x%x\n", ISR_MaskNumber );
+  kprintf ( "SetInterruptMask 0x%x\n", ISR_MaskNumber );
   #endif
   return 0;  /* Success. */
 }
@@ -299,7 +300,7 @@ signed char ResetInterruptMask( unsigned char ISR_MaskNumber )
 /* Algorithm      : RTX syntax is used.                                      */
 {
   #if defined(TRACE_HARNESS)
-  printf ( "ResetInterruptMask 0x%x\n", ISR_MaskNumber );
+  kprintf ( "ResetInterruptMask 0x%x\n", ISR_MaskNumber );
   #endif
   return 0;  /* Success. */
 }
@@ -317,7 +318,7 @@ void WaitInterrupt ( unsigned char ISR_VectorNumber, unsigned char timer )
 /*                   software_error register.                                */
 {
   #if defined(TRACE_HARNESS)
-  printf ( "WaitInterrupt %d, time %d\n", ISR_VectorNumber, timer );
+  kprintf ( "WaitInterrupt %d, time %d\n", ISR_VectorNumber, timer );
   #endif
 }
 
@@ -359,7 +360,7 @@ void SendTaskMail (
 /*                    telemetry.                                            */
 {
   #if defined(TRACE_HARNESS)
-  printf ( "SendTaskMail to %d, message %d, timeout %d\n",
+  kprintf ( "SendTaskMail to %d, message %d, timeout %d\n",
            mailbox, message, timeout );
   #endif
 
@@ -367,7 +368,7 @@ void SendTaskMail (
     mail_message[ mailbox ] = message;
   else {
     #if defined(TRACE_HARNESS)
-    printf ( "Overflow on mailbox %d, already %d message(s)\n",
+    kprintf ( "Overflow on mailbox %d, already %d message(s)\n",
              mailbox, mail_count[ mailbox ] );
     #endif
     mail_overflows ++;
@@ -390,7 +391,7 @@ void WaitMail ( incoming_mail_t EXTERNAL *message ) COMPACT_DATA REENTRANT_FUNC
 /*                   in software_error register.                             */
 {
   #if defined(TRACE_HARNESS)
-  printf ( "WaitMail from %d, timeout %d\n",
+  kprintf ( "WaitMail from %d, timeout %d\n",
            message -> mailbox_number, message -> timeout );
   #endif
 
@@ -401,7 +402,7 @@ void WaitMail ( incoming_mail_t EXTERNAL *message ) COMPACT_DATA REENTRANT_FUNC
     *( message -> message )       = mail_message[ message -> mailbox_number ];
 
     #if defined(TRACE_HARNESS)
-    printf ( "Message from %d is %d = 0x%x\n",
+    kprintf ( "Message from %d is %d = 0x%x\n",
              message -> mailbox_number,
              *( message -> message ),
              *( message -> message ) );
@@ -421,7 +422,7 @@ static void FlushMail ( unsigned char mailbox )
 /* Remove all mail from the mailbox. Harness use only. */
 {
   #if defined(TRACE_HARNESS)
-  printf ( "FlushMail from box %d, which had %d messages.\n",
+  kprintf ( "FlushMail from box %d, which had %d messages.\n",
            mailbox, mail_count[ mailbox ] );
   #endif
 
@@ -445,7 +446,7 @@ unsigned char Check_Current ( unsigned char bits )
 {
   unsigned char val;
   #if defined(TRACE_HARNESS)
-  printf ( "Check_Current 0x%x\n", bits );
+  kprintf ( "Check_Current 0x%x\n", bits );
   #endif
   switch ( bits ) {
     case   3:
@@ -463,7 +464,7 @@ unsigned char Check_Current ( unsigned char bits )
     default :
       val =  0;
       #if defined(TRACE_HARNESS)
-      printf ( "Check_Current param error\n" );
+      kprintf ( "Check_Current param error\n" );
       break;
       #endif
   }
@@ -495,7 +496,7 @@ unsigned char Check_Current ( unsigned char bits )
 void Reboot( reset_class_t boot_type )
 {
   #if defined(TRACE_HARNESS)
-  printf ( "Reboot %d\n", boot_type );
+  kprintf ( "Reboot %d\n", boot_type );
   #endif
 
   if ( boot_type == checksum_reset_e ) {
@@ -525,7 +526,7 @@ unsigned char TestMemBits ( data_address_t address )
 */
 {
   #if defined(TRACE_HARNESS)
-  printf ( "TestMemBits 0x%x\n", address );
+  kprintf ( "TestMemBits 0x%x\n", address );
   #endif
   return 0;
 }
@@ -552,7 +553,7 @@ unsigned char TestMemData (
 */
 {
   #if defined(TRACE_HARNESS)
-  printf ( "TestMemData start 0x%x, bytes %d\n", start, bytes );
+  kprintf ( "TestMemData start 0x%x, bytes %d\n", start, bytes );
   #endif
   return 0;
 }
@@ -580,7 +581,7 @@ unsigned char TestMemSeq (
 */
 {
   #if defined(TRACE_HARNESS)
-  printf ( "TestMemSeq start 0x%x, bytes %d\n", start, bytes );
+  kprintf ( "TestMemSeq start 0x%x, bytes %d\n", start, bytes );
   #endif
   return 0;
 }
@@ -602,7 +603,7 @@ static uint16_t tc_word;
 unsigned char Read_TC_MSB ( void )
 {
   #if defined(TRACE_HARNESS)
-  printf ( "Read_TC_MSB\n" );
+  kprintf ( "Read_TC_MSB\n" );
   #endif
   return tc_msb;
 }
@@ -611,7 +612,7 @@ unsigned char Read_TC_MSB ( void )
 unsigned char Read_TC_LSB ( void )
 {
   #if defined(TRACE_HARNESS)
-  printf ( "Read_TC_LSB\n" );
+  kprintf ( "Read_TC_LSB\n" );
   #endif
   return tc_lsb;
 }
@@ -624,7 +625,7 @@ static unsigned char tm_msb, tm_lsb;
 void Write_TM_LSB ( unsigned char value )
 {
   #if defined(TRACE_HARNESS)
-  printf ( "Write_TM_LSB %d = 0x%x\n", value, value );
+  kprintf ( "Write_TM_LSB %d = 0x%x\n", value, value );
   #endif
   tm_lsb = value;
 }
@@ -633,7 +634,7 @@ void Write_TM_LSB ( unsigned char value )
 void Write_TM_MSB ( unsigned char value )
 {
   #if defined(TRACE_HARNESS)
-  printf ( "Write_TM_MSB %d = 0x%x\n", value, value );
+  kprintf ( "Write_TM_MSB %d = 0x%x\n", value, value );
   #endif
   tm_msb = value;
 }
@@ -651,7 +652,7 @@ static unsigned char tc_timer_overflow = 1;
 unsigned char TC_Timer_Overflow_Flag ( void )
 {
   #if defined(TRACE_HARNESS)
-  printf ( "TC_Timer_Overflow_Flag\n" );
+  kprintf ( "TC_Timer_Overflow_Flag\n" );
   #endif
   return tc_timer_overflow;
 }
@@ -660,7 +661,7 @@ unsigned char TC_Timer_Overflow_Flag ( void )
 void Clear_TC_Timer_Overflow_Flag ( void )
 {
   #if defined(TRACE_HARNESS)
-  printf ( "Clear_TC_Timer_Overflow_Flag\n" );
+  kprintf ( "Clear_TC_Timer_Overflow_Flag\n" );
   #endif
   tc_timer_overflow = 0;
 }
@@ -669,7 +670,7 @@ void Clear_TC_Timer_Overflow_Flag ( void )
 void Set_TC_Timer_Overflow_Flag ( void )
 {
   #if defined(TRACE_HARNESS)
-  printf ( "Set_TC_Timer_Overflow_Flag\n" );
+  kprintf ( "Set_TC_Timer_Overflow_Flag\n" );
   #endif
   tc_timer_overflow = 1;
 }
@@ -768,7 +769,7 @@ void Set_AD_Unlimited ( void )
   uint_least8_t c;
 
   #if defined(TRACE_HARNESS)
-  printf ( "Set AD Unlimited\n" );
+  kprintf ( "Set AD Unlimited\n" );
   #endif
 
   _Pragma( "loopbound min 40 max 40" )
@@ -783,7 +784,7 @@ void Set_AD_Nominal ( void )
 /* Sets A/D limits to ensure nominal (in-range) readings. */
 {
   #if defined(TRACE_HARNESS)
-  printf ( "Set AD Nominal\n" );
+  kprintf ( "Set AD Nominal\n" );
   #endif
 
   /* SU +5V supply: */
@@ -989,7 +990,7 @@ static unsigned int ad_fail_index = 0;
 void Update_ADC_Channel_Reg ( unsigned char channel )
 {
   #if defined(TRACE_HARNESS)
-  printf ( "Update_ADC_Channel_Reg %x\n", channel );
+  kprintf ( "Update_ADC_Channel_Reg %x\n", channel );
   #endif
 }
 
@@ -1010,12 +1011,12 @@ void Start_Conversion ( void )
   channel = ADC_channel_register & 0x3f;
 
   #if defined(TRACE_HARNESS)
-  printf ( "Start_Conversion on channel %d\n", channel );
+  kprintf ( "Start_Conversion on channel %d\n", channel );
   #endif
 
   if ( ad_converting != 0 ) {
     #if defined(TRACE_HARNESS)
-    printf ( "- previous conversion did not end.\n" );
+    kprintf ( "- previous conversion did not end.\n" );
     #endif
   }
 
@@ -1043,7 +1044,7 @@ void Start_Conversion ( void )
       /* Pretend that this conversion will fail (not end). */
 
       #if defined(TRACE_HARNESS)
-      printf ( "Start_Conversion starts a failing A/D conversion.\n" );
+      kprintf ( "Start_Conversion starts a failing A/D conversion.\n" );
       #endif
       ad_conv_timer = -5000;
 
@@ -1062,7 +1063,7 @@ void Report_Start_Conversion_Count ( int problem )
 */
 {
   #if defined(TRACE_HARNESS)
-  printf ( "Called Start_Conversion %d times in problem %d.\n",
+  kprintf ( "Called Start_Conversion %d times in problem %d.\n",
            start_conversion_count, problem );
   #endif
 
@@ -1080,12 +1081,12 @@ unsigned char End_Of_ADC ( void )
 */
 {
   #if defined(TRACE_HARNESS)
-  printf ( "End_Of_ADC\n" );
+  kprintf ( "End_Of_ADC\n" );
   #endif
 
   if ( ad_converting == 0 ) {
     #if defined(TRACE_HARNESS)
-    printf ( "- conversion not going on.\n" );
+    kprintf ( "- conversion not going on.\n" );
     #endif
   }
 
@@ -1111,7 +1112,7 @@ unsigned char End_Of_ADC ( void )
         /* Hit me again, Sam. */
 
         #if defined(TRACE_HARNESS)
-        printf ( "Hit during A/D\n" );
+        kprintf ( "Hit during A/D\n" );
         #endif
         confirm_hit_result = 1;
 
@@ -1139,7 +1140,7 @@ void Report_End_Of_ADC_Count ( int problem )
 */
 {
   #if defined(TRACE_HARNESS)
-  printf ( "Called End_Of_ADC %d times in problem %d.\n",
+  kprintf ( "Called End_Of_ADC %d times in problem %d.\n",
            end_of_adc_count, problem );
   #endif
 
@@ -1156,7 +1157,7 @@ unsigned char Get_Result ( void )
   value = ( ad_value >> 8 ) & 0xff;
 
   #if defined(TRACE_HARNESS)
-  printf ( "Get_Result %d = 0x%x\n", value, value );
+  kprintf ( "Get_Result %d = 0x%x\n", value, value );
   #endif
 
   /* Shift the LSB to the MSB, for next Get_Result: */
@@ -1169,7 +1170,7 @@ unsigned char Get_Result ( void )
 void Set_DAC_Output ( unsigned char level )
 {
   #if defined(TRACE_HARNESS)
-  printf ( "Set_DAC_Output %d\n", level );
+  kprintf ( "Set_DAC_Output %d\n", level );
   #endif
 }
 
@@ -1223,7 +1224,7 @@ void Sim_Self_Test_Trigger ( void )
        &&  ( self_test_SU_number != NO_SU )
        &&  ( SU_state[ self_test_SU_number - SU1 ] == self_test_trigger_e ) ) {
     #if defined(TRACE_HARNESS)
-    printf ( "SU Self Test trigger!\n" );
+    kprintf ( "SU Self Test trigger!\n" );
     #endif
     SU_state[ self_test_SU_number - SU1 ] = self_test_e;
   }
@@ -1257,7 +1258,7 @@ static void Set_Trigger_SU ( sensor_index_t SU )
 /* Sets the given SU in trigger_source_0/1. */
 {
   #if defined(TRACE_HARNESS)
-  printf ( "Set Trigger SU index %d\n", SU );
+  kprintf ( "Set Trigger SU index %d\n", SU );
   #endif
 
   trigger_source_0 =  SU       & 1;
@@ -1268,7 +1269,7 @@ static void Set_Trigger_SU ( sensor_index_t SU )
 void Enable_Hit_Trigger  ( void )
 {
   #if defined(TRACE_HARNESS)
-  printf ( "Enable_Hit_Trigger\n" );
+  kprintf ( "Enable_Hit_Trigger\n" );
   #endif
   hit_enabled = 1;
   Sim_Self_Test_Trigger ();
@@ -1277,7 +1278,7 @@ void Enable_Hit_Trigger  ( void )
 void Disable_Hit_Trigger ( void )
 {
   #if defined(TRACE_HARNESS)
-  printf ( "Disable_Hit_Trigger\n" );
+  kprintf ( "Disable_Hit_Trigger\n" );
   #endif
   hit_enabled = 0;
   Sim_Self_Test_Trigger ();
@@ -1287,7 +1288,7 @@ void Disable_Hit_Trigger ( void )
 unsigned char Hit_Trigger_Flag ( void )
 {
   #if defined(TRACE_HARNESS)
-  printf ( "Hit_Trigger_Flag\n" );
+  kprintf ( "Hit_Trigger_Flag\n" );
   #endif
   return trigger_flag;
   /* 1 means hit trigger ITs are enabled
@@ -1299,7 +1300,7 @@ unsigned char Hit_Trigger_Flag ( void )
 unsigned char Event_Flag ( void )
 {
   #if defined(TRACE_HARNESS)
-  printf ( "Event_Flag \n" );
+  kprintf ( "Event_Flag \n" );
   #endif
   return event_flag;
 }
@@ -1308,7 +1309,7 @@ unsigned char Event_Flag ( void )
 unsigned char Get_MSB_Counter ( void )
 {
   #if defined(TRACE_HARNESS)
-  printf ( "Get_MSB_Counter\n" );
+  kprintf ( "Get_MSB_Counter\n" );
   #endif
   return msb_counter;
 }
@@ -1317,7 +1318,7 @@ unsigned char Get_MSB_Counter ( void )
 unsigned char Get_LSB1_Counter  ( void )
 {
   #if defined(TRACE_HARNESS)
-  printf ( "Get_LSB1_Counter\n" );
+  kprintf ( "Get_LSB1_Counter\n" );
   #endif
   return lsb1_counter;
 }
@@ -1326,7 +1327,7 @@ unsigned char Get_LSB1_Counter  ( void )
 unsigned char Get_LSB2_Counter  ( void )
 {
   #if defined(TRACE_HARNESS)
-  printf ( "Get_LSB2_Counter\n" );
+  kprintf ( "Get_LSB2_Counter\n" );
   #endif
   return lsb2_counter;
 }
@@ -1335,7 +1336,7 @@ unsigned char Get_LSB2_Counter  ( void )
 unsigned char Rise_Time_Counter ( void )
 {
   #if defined(TRACE_HARNESS)
-  printf ( "Rise_Time_Counter\n" );
+  kprintf ( "Rise_Time_Counter\n" );
   #endif
   return rise_time_counter;
 }
@@ -1344,7 +1345,7 @@ unsigned char Rise_Time_Counter ( void )
 unsigned char Trigger_Source_0 ( void )
 {
   #if defined(TRACE_HARNESS)
-  printf ( "Trigger_Source_0\n" );
+  kprintf ( "Trigger_Source_0\n" );
   #endif
   return trigger_source_0;
 }
@@ -1353,7 +1354,7 @@ unsigned char Trigger_Source_0 ( void )
 unsigned char Trigger_Source_1 ( void )
 {
   #if defined(TRACE_HARNESS)
-  printf ( "Trigger_Source_1\n" );
+  kprintf ( "Trigger_Source_1\n" );
   #endif
   return trigger_source_1;
 }
@@ -1363,7 +1364,7 @@ void Set_SU_Self_Test_Ch ( unsigned char value )
 /* Set the SU Self Test Channel selectors. */
 {
   #if defined(TRACE_HARNESS)
-  printf ( "Set SU Self-Test Channel %x\n", value );
+  kprintf ( "Set SU Self-Test Channel %x\n", value );
   #endif
 }
 
@@ -1372,7 +1373,7 @@ void Set_Test_Pulse_Level ( unsigned char level )
 /* Set the SU Self Test pulse level. */
 {
   #if defined(TRACE_HARNESS)
-  printf ( "Set SU Self-Test Pulse Level %d\n", level );
+  kprintf ( "Set SU Self-Test Pulse Level %d\n", level );
   #endif
   self_test_pulse = level;
   Sim_Self_Test_Trigger ();
@@ -1396,7 +1397,7 @@ unsigned char V_Down ( void )
     result = 1;  /* Good. */
 
   #if defined(TRACE_HARNESS)
-  printf ( "V_Down %d\n", result );
+  kprintf ( "V_Down %d\n", result );
   #endif
 
   return result;
@@ -1408,7 +1409,7 @@ void SignalPeakDetectorReset(
   unsigned char high_reset_value )
 {
   #if defined(TRACE_HARNESS)
-  printf ( "SignalPeakDetectorReset low %d, high %d\n",
+  kprintf ( "SignalPeakDetectorReset low %d, high %d\n",
            low_reset_value, high_reset_value );
   #endif
 }
@@ -1449,7 +1450,7 @@ unsigned short int Short_Value ( tm_ushort_t *x )
 void Call_Patch ( fptr_t func )
 {
   #if defined(TRACE_HARNESS)
-  printf ( "Call_Patch 0x%x\n", ( code_address_t )func );
+  kprintf ( "Call_Patch 0x%x\n", ( code_address_t )func );
   #endif
 }
 
@@ -1555,7 +1556,7 @@ void Check_Type_Size ( void )
 #include "problems.h"
 
 #if defined(TRACE_HARNESS)
-#define CASE(TXT) printf ("\nCASE: %s:\n\n", TXT)
+#define CASE(TXT) kprintf ("\nCASE: %s:\n\n", TXT)
 #else
 #define CASE(TXT)
 #endif
@@ -1573,7 +1574,7 @@ static void Report_Checks ( void )
 {
   TARGET_MARK;
   #if defined(TRACE_HARNESS)
-  printf ( "Total checks done %d, failed %d\n", checks, check_errors );
+  kprintf ( "Total checks done %d, failed %d\n", checks, check_errors );
   #endif
 }
 
@@ -1583,7 +1584,7 @@ static void Fail_Check ( char *message )
 {
   check_errors ++;
   #if defined(TRACE_HARNESS)
-  printf ( "%s: FAILED (#%d)\n", message, check_errors );
+  kprintf ( "%s: FAILED (#%d)\n", message, check_errors );
   #endif
 }
 
@@ -1682,7 +1683,7 @@ static void TC_ISR_Tests ( void )
 {
 
   #if defined(TRACE_HARNESS)
-  printf ( "\nTC_ISR_Tests\n" );
+  kprintf ( "\nTC_ISR_Tests\n" );
   #endif
 
   CASE( "TC rejected because timer overflow is not set" );
@@ -1999,7 +2000,7 @@ static void TC_Task_Tests ( void )
   unsigned char chsum;
 
   #if defined(TRACE_HARNESS)
-  printf ( "\nTC_Task_Tests\n" );
+  kprintf ( "\nTC_Task_Tests\n" );
   #endif
 
   CASE( "TC = ERROR_STATUS_CLEAR, ok" );
@@ -2625,7 +2626,7 @@ void Monitoring_Task_Tests ( void )
   }
 
   #if defined(TRACE_HARNESS)
-  printf ( "Total hits %d\n", total_adc_hits );
+  kprintf ( "Total hits %d\n", total_adc_hits );
   #endif
 
   Check_Nonzero ( total_adc_hits );
@@ -2648,7 +2649,7 @@ void Monitoring_Task_Tests ( void )
   }
 
   #if defined(TRACE_HARNESS)
-  printf ( "Total hits %d\n", total_adc_hits );
+  kprintf ( "Total hits %d\n", total_adc_hits );
   #endif
 
   Check_Nonzero ( total_adc_hits );
@@ -2684,7 +2685,7 @@ void Monitoring_Task_Tests ( void )
       tot_errors ++;
 
       #if defined(TRACE_HARNESS)
-      printf ( "Monitoring (6d) error %d, error status %x\n",
+      kprintf ( "Monitoring (6d) error %d, error status %x\n",
                tot_errors, telemetry_data.error_status );
       #endif
       Clear_Errors ();
@@ -2719,7 +2720,7 @@ void Monitoring_Task_Tests ( void )
       tot_errors ++;
 
       #if defined(TRACE_HARNESS)
-      printf ( "Monitoring (6e) error %d, error status %x\n",
+      kprintf ( "Monitoring (6e) error %d, error status %x\n",
                tot_errors, telemetry_data.error_status );
       #endif
       Clear_Errors ();
@@ -2737,7 +2738,7 @@ void TM_Tests ( void )
   /* Number of octets sent and acknowledge by TM interrupt. */
 
   #if defined(TRACE_HARNESS)
-  printf ( "\nTM_ISR_Tests\n" );
+  kprintf ( "\nTM_ISR_Tests\n" );
   #endif
 
   CASE( "One whole round of register TM" );
@@ -2834,7 +2835,7 @@ void TM_Tests ( void )
   }
 
   #if defined(TRACE_HARNESS)
-  printf ( "Science TM octets sent %d\n", octets );
+  kprintf ( "Science TM octets sent %d\n", octets );
   #endif
 
   /* Handle the TM_READY message: */
@@ -2858,7 +2859,7 @@ static void Trigger_Hit ( int problem )
   Check ( mail_count[ ACQUISITION_MAILBOX ] == 0 );
 
   #if defined(TRACE_HARNESS)
-  printf ( "Hit!\n" );
+  kprintf ( "Hit!\n" );
   #endif
 
   FOR_PROBLEM( problem );
@@ -2869,9 +2870,9 @@ static void Trigger_Hit ( int problem )
 
   #if defined(TRACE_HARNESS)
   if ( mail_count[ ACQUISITION_MAILBOX ] == 0 )
-    printf ( "- hit rejected\n" );
+    kprintf ( "- hit rejected\n" );
   else
-    printf ( "- hit accepted\n" );
+    kprintf ( "- hit accepted\n" );
   #endif
 }
 
@@ -2913,7 +2914,7 @@ static void Hit_ISR_Tests ( void )
   sensor_index_t su;
 
   #if defined(TRACE_HARNESS)
-  printf ( "\nHit_ISR_Tests\n" );
+  kprintf ( "\nHit_ISR_Tests\n" );
   #endif
 
   /* Reset the historical record: */
@@ -3132,7 +3133,7 @@ void Report_Event_Histo ( void )
   for ( sen = 0; sen < NUM_SU; sen ++ )
     _Pragma( "loopbound min 10 max 10" )  
     for ( class = 0; class < NUM_CLASSES; class ++ ) {
-      printf ( "Events from SU %d, class %d: %d\n",
+      kprintf ( "Events from SU %d, class %d: %d\n",
                sen, class, science_data.event_counter[ sen ][ class ] );
     }
   #endif
@@ -3259,7 +3260,7 @@ static void Acquisition_Tests ( void )
   }
 
   #if defined(TRACE_HARNESS)
-  printf ( "Science Data filled with %d events after %d hits.\n",
+  kprintf ( "Science Data filled with %d events after %d hits.\n",
            max_events, hits );
   #endif
   Report_Event_Histo ();
@@ -3338,7 +3339,7 @@ static void Acquisition_Tests ( void )
   }
 
   #if defined(TRACE_HARNESS)
-  printf ( "Science TM octets sent %d\n", octets );
+  kprintf ( "Science TM octets sent %d\n", octets );
   #endif
 
   Check_Zero ( hit_budget_left );
@@ -3654,7 +3655,7 @@ void StartSystem( unsigned char task_number )
 /* Executes the test scenario.                                               */
 {
   #if defined(TRACE_HARNESS)
-  printf ( "StartSystem %d\n", task_number );
+  kprintf ( "StartSystem %d\n", task_number );
   #endif
 
   /* Initialize the global data of the tasks: */
@@ -3668,7 +3669,7 @@ void StartSystem( unsigned char task_number )
     test_round ++;
 
     #if defined(TRACE_HARNESS)
-    printf ( "Test round %d\n", test_round );
+    kprintf ( "Test round %d\n", test_round );
     #endif
 
     TARGET_START_TEST;
@@ -3707,7 +3708,7 @@ void StartSystem( unsigned char task_number )
   } while ( TARGET_REPEAT_TEST );
 
   #if defined(TRACE_HARNESS)
-  printf ( "Total mailbox overflows %d\n", mail_overflows );
+  kprintf ( "Total mailbox overflows %d\n", mail_overflows );
   exit ( 0 );
   #endif
 

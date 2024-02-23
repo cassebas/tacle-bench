@@ -66,7 +66,7 @@ uint_least8_t EXTERNAL event_queue_length;
 /* in order starting from the first element.       */
 /* Initialised to zero on power-up.                */
 
-uint_least16_t EXTERNAL free_slot_index;
+unsigned int EXTERNAL free_slot_index;
 /* Index to the first free record in the Science         */
 /* Data memory, or if it is full equals to 'max_events'. */
 /* Initialised to zero on power-up.                      */
