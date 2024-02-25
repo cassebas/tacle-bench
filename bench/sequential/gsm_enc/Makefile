@@ -5,6 +5,9 @@ OBJCOPY=$(CROSS_COMPILE)objcopy
 OBJDUMP=$(CROSS_COMPILE)objdump
 
 CFLAGS = -march=rv32imac -mabi=ilp32
+ifneq ($(BENCHMARK_CONFIG),)
+	CFLAGS += -DRISCV_CORE_CONFIG=\"$(BENCHMARK_CONFIG)\"
+endif
 
 CCFLAGS = $(CFLAGS)
 CCFLAGS += -mcmodel=medany -O2 -Wall -g
