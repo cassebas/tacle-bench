@@ -37,6 +37,8 @@
   fitness for purpose.
   -----------------------------------------------------------------------
 */
+#include <stdint.h>
+#include "kprintf.h"
 
 #include "aes.h"
 #include "rijndael_dec_libc.h"
@@ -181,9 +183,19 @@ void _Pragma( "entrypoint" ) rijndael_dec_main( void )
 
 int main()
 {
+  uintptr_t cycles1, cycles2, cycles3;
 
+  kprintf("rijndael_dec start\n");
   rijndael_dec_init();
+  asm volatile ("csrr %0, mcycle" : "=r" (cycles1));
   rijndael_dec_main();
+  asm volatile ("csrr %0, mcycle" : "=r" (cycles2));
+  rijndael_dec_main();
+  asm volatile ("csrr %0, mcycle" : "=r" (cycles3));
+  kprintf("rijndael_dec stop\n");
+
+  kprintf("rijndael_dec cycles cold cache %ld\n", cycles2 - cycles1);
+  kprintf("rijndael_dec cycles warm cache %ld\n", cycles3 - cycles2);
 
   return ( rijndael_dec_return() );
 }

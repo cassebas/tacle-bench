@@ -18,6 +18,8 @@
   License: may be used, modified, and re-distributed freely
 
 */
+#include <stdint.h>
+#include "kprintf.h"
 
 /* Remove the following #define for actual WCET analyses! */
 /*
@@ -975,7 +977,18 @@ int petrinet_return( void )
 
 int main( void )
 {
+  uintptr_t cycles1, cycles2, cycles3;
+
+  kprintf("petrinet start\n");
+  asm volatile ("csrr %0, mcycle" : "=r" (cycles1));
   petrinet_main();
+  asm volatile ("csrr %0, mcycle" : "=r" (cycles2));
+  petrinet_main();
+  asm volatile ("csrr %0, mcycle" : "=r" (cycles3));
+  kprintf("petrinet stop\n");
+
+  kprintf("petrinet cycles cold cache %ld\n", cycles2 - cycles1);
+  kprintf("petrinet cycles warm cache %ld\n", cycles3 - cycles2);
 
   return ( petrinet_return() );
 }

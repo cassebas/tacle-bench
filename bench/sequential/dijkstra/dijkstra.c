@@ -16,6 +16,8 @@
   License: GPL
 
 */
+#include <stdint.h>
+#include "kprintf.h"
 
 #include "input.h"
 
@@ -190,8 +192,19 @@ void _Pragma( "entrypoint" ) dijkstra_main( void )
 
 int main( void )
 {
+  uintptr_t cycles1, cycles2, cycles3;
+
+  kprintf("dijkstra start\n");
   dijkstra_init();
+  asm volatile ("csrr %0, mcycle" : "=r" (cycles1));
   dijkstra_main();
+  asm volatile ("csrr %0, mcycle" : "=r" (cycles2));
+  dijkstra_main();
+  asm volatile ("csrr %0, mcycle" : "=r" (cycles3));
+  kprintf("dijkstra stop\n");
+
+  kprintf("dijkstra cycles cold cache %ld\n", cycles2 - cycles1);
+  kprintf("dijkstra cycles warm cache %ld\n", cycles3 - cycles2);
 
   return ( dijkstra_return() );
 }

@@ -4,6 +4,8 @@
    Universitaet Berlin.  See the accompanying file "COPYRIGHT" for
    details.  THERE IS ABSOLUTELY NO WARRANTY FOR THIS SOFTWARE.
 */
+#include <stdint.h>
+#include "kprintf.h"
 
 #include "private.h"
 
@@ -2217,7 +2219,19 @@ void _Pragma( "entrypoint" ) gsm_enc_main( void )
 
 int main( void )
 {
+  uintptr_t cycles1, cycles2, cycles3;
+
+  kprintf("gsm_enc start\n");
   gsm_enc_init();
+  asm volatile ("csrr %0, mcycle" : "=r" (cycles1));
   gsm_enc_main();
+  asm volatile ("csrr %0, mcycle" : "=r" (cycles2));
+  gsm_enc_main();
+  asm volatile ("csrr %0, mcycle" : "=r" (cycles3));
+  kprintf("gsm_enc stop\n");
+
+  kprintf("gsm_enc cycles cold cache %ld\n", cycles2 - cycles1);
+  kprintf("gsm_enc cycles warm cache %ld\n", cycles3 - cycles2);
+
   return ( gsm_enc_return() );
 }

@@ -24,6 +24,8 @@
 /*
   Include section
 */
+#include <stdint.h>
+#include "kprintf.h"
 
 #include "h264_dec.h"
 
@@ -596,8 +598,19 @@ void _Pragma( "entrypoint" )  h264_dec_main( void )
 
 int main( void )
 {
+  uintptr_t cycles1, cycles2, cycles3;
+
+  kprintf("h264_dec start\n");
   h264_dec_init();
+  asm volatile ("csrr %0, mcycle" : "=r" (cycles1));
   h264_dec_main();
+  asm volatile ("csrr %0, mcycle" : "=r" (cycles2));
+  h264_dec_main();
+  asm volatile ("csrr %0, mcycle" : "=r" (cycles3));
+  kprintf("h264_dec stop\n");
+
+  kprintf("h264_dec cycles cold cache %ld\n", cycles2 - cycles1);
+  kprintf("h264_dec cycles warm cache %ld\n", cycles3 - cycles2);
 
   return ( h264_dec_return() );
 }

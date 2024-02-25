@@ -28,6 +28,8 @@
 /*
   Include section
 */
+#include <stdint.h>
+#include "kprintf.h"
 
 #include "jpeglib.h"
 
@@ -706,8 +708,19 @@ void _Pragma ( "entrypoint" ) cjpeg_transupp_main( void )
 
 int main( void )
 {
+  uintptr_t cycles1, cycles2, cycles3;
+
+  kprintf("cjpeg_transupp start\n");
   cjpeg_transupp_init();
+  asm volatile ("csrr %0, mcycle" : "=r" (cycles1));
   cjpeg_transupp_main();
+  asm volatile ("csrr %0, mcycle" : "=r" (cycles2));
+  cjpeg_transupp_main();
+  asm volatile ("csrr %0, mcycle" : "=r" (cycles3));
+  kprintf("cjpeg_transupp stop\n");
+
+  kprintf("cjpeg_transupp cycles cold cache %ld\n", cycles2 - cycles1);
+  kprintf("cjpeg_transupp cycles warm cache %ld\n", cycles3 - cycles2);
 
   return ( cjpeg_transupp_return() - 1624 != 0 );
 }

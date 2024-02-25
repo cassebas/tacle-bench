@@ -42,7 +42,8 @@
   new schemes (this item is not a must)
 
 */
-
+#include <stdint.h>
+#include "kprintf.h"
 
 /*
   Declaration of types
@@ -376,7 +377,19 @@ void _Pragma( "entrypoint" ) huff_dec_main( void )
 
 int main( void )
 {
+  uintptr_t cycles1, cycles2, cycles3;
+
+  kprintf("huff_dec start\n");
   huff_dec_init();
+  asm volatile ("csrr %0, mcycle" : "=r" (cycles1));
   huff_dec_main();
+  asm volatile ("csrr %0, mcycle" : "=r" (cycles2));
+  huff_dec_main();
+  asm volatile ("csrr %0, mcycle" : "=r" (cycles3));
+  kprintf("huff_dec stop\n");
+
+  kprintf("huff_dec cycles cold cache %ld\n", cycles2 - cycles1);
+  kprintf("huff_dec cycles warm cache %ld\n", cycles3 - cycles2);
+
   return ( huff_dec_return() );
 }

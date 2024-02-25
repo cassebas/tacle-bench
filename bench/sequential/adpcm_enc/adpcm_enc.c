@@ -25,6 +25,8 @@
            SNU-RT Benchmark Suite must be acknowledged
 
 */
+#include <stdint.h>
+#include "kprintf.h"
 
 
 /* common sampling rate for sound cards on IBM/PC */
@@ -749,8 +751,19 @@ void _Pragma( "entrypoint" ) adpcm_enc_main( void )
 
 int main( void )
 {
+  uintptr_t cycles1, cycles2, cycles3;
+
+  kprintf("adpcm_enc start\n");
   adpcm_enc_init();
+  asm volatile ("csrr %0, mcycle" : "=r" (cycles1));
   adpcm_enc_main();
+  asm volatile ("csrr %0, mcycle" : "=r" (cycles2));
+  adpcm_enc_main();
+  asm volatile ("csrr %0, mcycle" : "=r" (cycles3));
+  kprintf("adpcm_enc stop\n");
+
+  kprintf("adpcm_enc cycles cold cache %ld\n", cycles2 - cycles1);
+  kprintf("adpcm_enc cycles warm cache %ld\n", cycles3 - cycles2);
 
   return adpcm_enc_return();
 }

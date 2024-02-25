@@ -3,6 +3,8 @@
   David Maze <dmaze@cag.lcs.mit.edu>
   $Id: fmref.c,v 1.2 2010-10-04 21:21:26 garus Exp $
 */
+#include <stdint.h>
+#include "kprintf.h"
 
 #include "wcclibm.h"
 #ifndef M_PI
@@ -74,8 +76,20 @@ int fmref_return( void )
 
 int main( void )
 {
+  uintptr_t cycles1, cycles2, cycles3;
+
+  kprintf("fmref start\n");
   fmref_init();
+  asm volatile ("csrr %0, mcycle" : "=r" (cycles1));
   fmref_main();
+  asm volatile ("csrr %0, mcycle" : "=r" (cycles2));
+  fmref_main();
+  asm volatile ("csrr %0, mcycle" : "=r" (cycles3));
+  kprintf("fmref stop\n");
+
+  kprintf("fmref cycles cold cache %ld\n", cycles2 - cycles1);
+  kprintf("fmref cycles warm cache %ld\n", cycles3 - cycles2);
+
   return fmref_return();
 }
 

@@ -156,6 +156,9 @@
    If you increase it beyond 4, you'll have to add a few more loop unrolling
    steps to FindAnagram.
 */
+#include <stdint.h>
+#include "kprintf.h"
+
 #include "anagram_ctype.h"
 #include "anagram_stdlib.h"
 #include "anagram_strings.h"
@@ -654,8 +657,19 @@ void _Pragma( "entrypoint" ) anagram_main( void )
 
 int main( void )
 {
+  uintptr_t cycles1, cycles2, cycles3;
+
+  kprintf("anagram start\n");
   anagram_init();
+  asm volatile ("csrr %0, mcycle" : "=r" (cycles1));
   anagram_main();
+  asm volatile ("csrr %0, mcycle" : "=r" (cycles2));
+  anagram_main();
+  asm volatile ("csrr %0, mcycle" : "=r" (cycles3));
+  kprintf("anagram stop\n");
+
+  kprintf("anagram cycles cold cache %ld\n", cycles2 - cycles1);
+  kprintf("anagram cycles warm cache %ld\n", cycles3 - cycles2);
 
   return anagram_return();
 }

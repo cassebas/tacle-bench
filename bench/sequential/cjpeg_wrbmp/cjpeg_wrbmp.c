@@ -23,6 +23,8 @@
   License:  See the accompanying README file
 
 */
+#include <stdint.h>
+#include "kprintf.h"
 
 #include "cdjpeg.h"
 
@@ -209,8 +211,19 @@ int cjpeg_wrbmp_return()
 
 int main( void )
 {
+  uintptr_t cycles1, cycles2, cycles3;
+
+  kprintf("cjpeg_wrbmp start\n");
   cjpeg_wrbmp_init();
+  asm volatile ("csrr %0, mcycle" : "=r" (cycles1));
   cjpeg_wrbmp_main();
+  asm volatile ("csrr %0, mcycle" : "=r" (cycles2));
+  cjpeg_wrbmp_main();
+  asm volatile ("csrr %0, mcycle" : "=r" (cycles3));
+  kprintf("cjpeg_wrbmp stop\n");
+
+  kprintf("cjpeg_wrbmp cycles cold cache %ld\n", cycles2 - cycles1);
+  kprintf("cjpeg_wrbmp cycles warm cache %ld\n", cycles3 - cycles2);
 
   return ( cjpeg_wrbmp_return() );
 }

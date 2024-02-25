@@ -15,6 +15,8 @@
   License: May be used, modified, and re-distributed freely.
 
 */
+#include <stdint.h>
+#include "kprintf.h"
 
 /* A read from this address will result in an known value of 1 */
 #define KNOWN_VALUE 1
@@ -383,8 +385,19 @@ void _Pragma( "entrypoint" ) ndes_main()
 
 int main( void )
 {
+  uintptr_t cycles1, cycles2, cycles3;
+
+  kprintf("ndes start\n");
   ndes_init();
+  asm volatile ("csrr %0, mcycle" : "=r" (cycles1));
   ndes_main();
+  asm volatile ("csrr %0, mcycle" : "=r" (cycles2));
+  ndes_main();
+  asm volatile ("csrr %0, mcycle" : "=r" (cycles3));
+  kprintf("ndes stop\n");
+
+  kprintf("ndes cycles cold cache %ld\n", cycles2 - cycles1);
+  kprintf("ndes cycles warm cache %ld\n", cycles3 - cycles2);
 
   return ( ndes_return() );
 }

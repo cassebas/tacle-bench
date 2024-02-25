@@ -23,6 +23,8 @@
   License: GPL 2 and LGPL 2
 
 */
+#include <stdint.h>
+#include "kprintf.h"
 
 #include "bits.h"
 #include "arithm.h"
@@ -1172,8 +1174,16 @@ void _Pragma( "entrypoint" ) ammunition_main( void )
 
 int main( void )
 {
+  uintptr_t cycles1, cycles2, cycles3;
+
+  kprintf("ammunition start\n");
   ammunition_init();
+  asm volatile ("csrr %0, mcycle" : "=r" (cycles1));
   ammunition_main();
+  asm volatile ("csrr %0, mcycle" : "=r" (cycles2));
+  ammunition_main();
+  asm volatile ("csrr %0, mcycle" : "=r" (cycles3));
+  kprintf("ammunition stop\n");
 
   return ( ammunition_return() );
 }

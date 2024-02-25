@@ -33,6 +33,8 @@
     no representations about the suitability of this software for any
     purpose.  It is provided "as is" without express or implied warranty.
 */
+#include <stdint.h>
+#include "kprintf.h"
 
 
 #include "epic.h"
@@ -1129,8 +1131,19 @@ int epic_return()
 
 int main( void )
 {
+  uintptr_t cycles1, cycles2, cycles3;
+
+  kprintf("dijkstra start\n");
   epic_init();
+  asm volatile ("csrr %0, mcycle" : "=r" (cycles1));
   epic_main();
+  asm volatile ("csrr %0, mcycle" : "=r" (cycles2));
+  epic_main();
+  asm volatile ("csrr %0, mcycle" : "=r" (cycles3));
+  kprintf("dijkstra stop\n");
+
+  kprintf("dijkstra cycles cold cache %ld\n", cycles2 - cycles1);
+  kprintf("dijkstra cycles warm cache %ld\n", cycles3 - cycles2);
 
   return epic_return();
 }

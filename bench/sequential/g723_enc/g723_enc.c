@@ -16,6 +16,9 @@
     License: "Unrestricted use" (see license.txt)
 
 */
+#include <stdint.h>
+#include "kprintf.h"
+
 
 /*
   Declaration of data types
@@ -870,8 +873,19 @@ void _Pragma( "entrypoint" ) g723_enc_main()
 
 int main( void )
 {
+  uintptr_t cycles1, cycles2, cycles3;
+
+  kprintf("g723_enc start\n");
   g723_enc_init();
+  asm volatile ("csrr %0, mcycle" : "=r" (cycles1));
   g723_enc_main();
+  asm volatile ("csrr %0, mcycle" : "=r" (cycles2));
+  g723_enc_main();
+  asm volatile ("csrr %0, mcycle" : "=r" (cycles3));
+  kprintf("g723_enc stop\n");
+
+  kprintf("g723_enc cycles cold cache %ld\n", cycles2 - cycles1);
+  kprintf("g723_enc cycles warm cache %ld\n", cycles3 - cycles2);
 
   return ( g723_enc_return() );
 }

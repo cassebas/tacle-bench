@@ -22,6 +22,8 @@
   License: may be used, modified, and re-distributed freely
 
 */
+#include <stdint.h>
+#include "kprintf.h"
 
 /*
   Macro definitions
@@ -1271,8 +1273,19 @@ void _Pragma ( "entrypoint" ) statemate_main( void )
 
 int main ( void )
 {
+  uintptr_t cycles1, cycles2, cycles3;
+
+  kprintf("statemate start\n");
   statemate_init();
+  asm volatile ("csrr %0, mcycle" : "=r" (cycles1));
   statemate_main();
+  asm volatile ("csrr %0, mcycle" : "=r" (cycles2));
+  statemate_main();
+  asm volatile ("csrr %0, mcycle" : "=r" (cycles3));
+  kprintf("statemate stop\n");
+
+  kprintf("statemate cycles cold cache %ld\n", cycles2 - cycles1);
+  kprintf("statemate cycles warm cache %ld\n", cycles3 - cycles2);
 
   return statemate_return();
 }
