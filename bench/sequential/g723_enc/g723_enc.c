@@ -19,6 +19,10 @@
 #include <stdint.h>
 #include "kprintf.h"
 
+#ifndef RISCV_CORE_CONFIG
+#define RISCV_CORE_CONFIG "rv32_i4k_d4k"
+#endif
+
 
 /*
   Declaration of data types
@@ -875,17 +879,19 @@ int main( void )
 {
   uintptr_t cycles1, cycles2, cycles3;
 
-  kprintf("g723_enc start\n");
+  kprintf("riscv_core_config %s benchmark %s start\n",
+          RISCV_CORE_CONFIG, "g723_enc");
   g723_enc_init();
   asm volatile ("csrr %0, mcycle" : "=r" (cycles1));
   g723_enc_main();
   asm volatile ("csrr %0, mcycle" : "=r" (cycles2));
   g723_enc_main();
   asm volatile ("csrr %0, mcycle" : "=r" (cycles3));
-  kprintf("g723_enc stop\n");
 
-  kprintf("g723_enc cycles cold cache %ld\n", cycles2 - cycles1);
-  kprintf("g723_enc cycles warm cache %ld\n", cycles3 - cycles2);
+  kprintf("riscv_core_config %s benchmark %s",
+          RISCV_CORE_CONFIG, "g723_enc");
+  kprintf("cycles_cold_cache %ld ", cycles2 - cycles1);
+  kprintf("cycles_warm_cache %ld\n", cycles3 - cycles2);
 
   return ( g723_enc_return() );
 }

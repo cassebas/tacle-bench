@@ -6,6 +6,10 @@
 #include <stdint.h>
 #include "kprintf.h"
 
+#ifndef RISCV_CORE_CONFIG
+#define RISCV_CORE_CONFIG "rv32_i4k_d4k"
+#endif
+
 #include "wcclibm.h"
 #ifndef M_PI
 #define M_PI        3.1415926535897932384626433832795
@@ -78,17 +82,19 @@ int main( void )
 {
   uintptr_t cycles1, cycles2, cycles3;
 
-  kprintf("fmref start\n");
+  kprintf("riscv_core_config %s benchmark %s start\n",
+          RISCV_CORE_CONFIG, "fmref");
   fmref_init();
   asm volatile ("csrr %0, mcycle" : "=r" (cycles1));
   fmref_main();
   asm volatile ("csrr %0, mcycle" : "=r" (cycles2));
   fmref_main();
   asm volatile ("csrr %0, mcycle" : "=r" (cycles3));
-  kprintf("fmref stop\n");
 
-  kprintf("fmref cycles cold cache %ld\n", cycles2 - cycles1);
-  kprintf("fmref cycles warm cache %ld\n", cycles3 - cycles2);
+  kprintf("riscv_core_config %s benchmark %s",
+          RISCV_CORE_CONFIG, "fmref");
+  kprintf("cycles_cold_cache %ld ", cycles2 - cycles1);
+  kprintf("cycles_warm_cache %ld\n", cycles3 - cycles2);
 
   return fmref_return();
 }

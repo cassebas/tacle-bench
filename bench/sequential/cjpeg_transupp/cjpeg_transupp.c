@@ -31,6 +31,10 @@
 #include <stdint.h>
 #include "kprintf.h"
 
+#ifndef RISCV_CORE_CONFIG
+#define RISCV_CORE_CONFIG "rv32_i4k_d4k"
+#endif
+
 #include "jpeglib.h"
 
 
@@ -710,17 +714,19 @@ int main( void )
 {
   uintptr_t cycles1, cycles2, cycles3;
 
-  kprintf("cjpeg_transupp start\n");
+  kprintf("riscv_core_config %s benchmark %s start\n",
+          RISCV_CORE_CONFIG, "cjpeg_transupp");
   cjpeg_transupp_init();
   asm volatile ("csrr %0, mcycle" : "=r" (cycles1));
   cjpeg_transupp_main();
   asm volatile ("csrr %0, mcycle" : "=r" (cycles2));
   cjpeg_transupp_main();
   asm volatile ("csrr %0, mcycle" : "=r" (cycles3));
-  kprintf("cjpeg_transupp stop\n");
 
-  kprintf("cjpeg_transupp cycles cold cache %ld\n", cycles2 - cycles1);
-  kprintf("cjpeg_transupp cycles warm cache %ld\n", cycles3 - cycles2);
+  kprintf("riscv_core_config %s benchmark %s",
+          RISCV_CORE_CONFIG, "cjpeg_transup");
+  kprintf("cycles_cold_cache %ld ", cycles2 - cycles1);
+  kprintf("cycles_warm_cache %ld\n", cycles3 - cycles2);
 
   return ( cjpeg_transupp_return() - 1624 != 0 );
 }

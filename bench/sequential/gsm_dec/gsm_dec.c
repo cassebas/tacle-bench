@@ -22,6 +22,10 @@
 #include <stdint.h>
 #include "kprintf.h"
 
+#ifndef RISCV_CORE_CONFIG
+#define RISCV_CORE_CONFIG "rv32_i4k_d4k"
+#endif
+
 #include "gsm.h"
 #include "add.h"
 #include "data.h"
@@ -754,17 +758,19 @@ int main( void )
 {
   uintptr_t cycles1, cycles2, cycles3;
 
-  kprintf("gsm_dec start\n");
+  kprintf("riscv_core_config %s benchmark %s start\n",
+          RISCV_CORE_CONFIG, "gsm_dec");
   gsm_dec_init();
   asm volatile ("csrr %0, mcycle" : "=r" (cycles1));
   gsm_dec_main();
   asm volatile ("csrr %0, mcycle" : "=r" (cycles2));
   gsm_dec_main();
   asm volatile ("csrr %0, mcycle" : "=r" (cycles3));
-  kprintf("gsm_dec stop\n");
 
-  kprintf("gsm_dec cycles cold cache %ld\n", cycles2 - cycles1);
-  kprintf("gsm_dec cycles warm cache %ld\n", cycles3 - cycles2);
+  kprintf("riscv_core_config %s benchmark %s",
+          RISCV_CORE_CONFIG, "gsm_dec");
+  kprintf("cycles_cold_cache %ld ", cycles2 - cycles1);
+  kprintf("cycles_warm_cache %ld\n", cycles3 - cycles2);
 
   return ( gsm_dec_return() );
 }

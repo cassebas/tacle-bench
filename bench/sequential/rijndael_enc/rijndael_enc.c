@@ -40,6 +40,10 @@
 #include <stdint.h>
 #include "kprintf.h"
 
+#ifndef RISCV_CORE_CONFIG
+#define RISCV_CORE_CONFIG "rv32_i4k_d4k"
+#endif
+
 #include "aes.h"
 #include "rijndael_enc_libc.h"
 
@@ -228,17 +232,19 @@ int main( void )
 {
   uintptr_t cycles1, cycles2, cycles3;
 
-  kprintf("rijndael_enc start\n");
+  kprintf("riscv_core_config %s benchmark %s start\n",
+          RISCV_CORE_CONFIG, "rijndael_enc");
   rijndael_enc_init();
   asm volatile ("csrr %0, mcycle" : "=r" (cycles1));
   rijndael_enc_main();
   asm volatile ("csrr %0, mcycle" : "=r" (cycles2));
   rijndael_enc_main();
   asm volatile ("csrr %0, mcycle" : "=r" (cycles3));
-  kprintf("rijndael_enc stop\n");
 
-  kprintf("rijndael_enc cycles cold cache %ld\n", cycles2 - cycles1);
-  kprintf("rijndael_enc cycles warm cache %ld\n", cycles3 - cycles2);
+  kprintf("riscv_core_config %s benchmark %s",
+          RISCV_CORE_CONFIG, "rijndael_enc");
+  kprintf("cycles_cold_cache %ld ", cycles2 - cycles1);
+  kprintf("cycles_warm_cache %ld\n", cycles3 - cycles2);
 
   return ( rijndael_enc_return() );
 }

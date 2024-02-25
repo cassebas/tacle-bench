@@ -36,6 +36,9 @@
 #include <stdint.h>
 #include "kprintf.h"
 
+#ifndef RISCV_CORE_CONFIG
+#define RISCV_CORE_CONFIG "rv32_i4k_d4k"
+#endif
 
 #include "epic.h"
 
@@ -1133,17 +1136,19 @@ int main( void )
 {
   uintptr_t cycles1, cycles2, cycles3;
 
-  kprintf("dijkstra start\n");
+  kprintf("riscv_core_config %s benchmark %s start\n",
+          RISCV_CORE_CONFIG, "epic");
   epic_init();
   asm volatile ("csrr %0, mcycle" : "=r" (cycles1));
   epic_main();
   asm volatile ("csrr %0, mcycle" : "=r" (cycles2));
   epic_main();
   asm volatile ("csrr %0, mcycle" : "=r" (cycles3));
-  kprintf("dijkstra stop\n");
 
-  kprintf("dijkstra cycles cold cache %ld\n", cycles2 - cycles1);
-  kprintf("dijkstra cycles warm cache %ld\n", cycles3 - cycles2);
+  kprintf("riscv_core_config %s benchmark %s",
+          RISCV_CORE_CONFIG, "epic");
+  kprintf("cycles_cold_cache %ld ", cycles2 - cycles1);
+  kprintf("cycles_warm_cache %ld\n", cycles3 - cycles2);
 
   return epic_return();
 }
