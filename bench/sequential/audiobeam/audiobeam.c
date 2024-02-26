@@ -29,7 +29,7 @@
 #define RISCV_CORE_CONFIG "rv32_i4k_d4k"
 #endif
 
-include "audiobeamlibm.h"
+#include "audiobeamlibm.h"
 #include "audiobeamlibmalloc.h"
 #include "audiobeam.h"
 
