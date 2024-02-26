@@ -671,9 +671,10 @@ int main( void )
   asm volatile ("csrr %0, mcycle" : "=r" (cycles2));
   anagram_main();
   asm volatile ("csrr %0, mcycle" : "=r" (cycles3));
-  kprintf("anagram stop\n");
+  kprintf("riscv_core_config %s benchmark %s stop\n",
+          RISCV_CORE_CONFIG, "anagram");
 
-  kprintf("riscv_core_config %s benchmark %s",
+  kprintf("riscv_core_config %s benchmark %s ",
           RISCV_CORE_CONFIG, "anagram");
   kprintf("cycles_cold_cache %ld ", cycles2 - cycles1);
   kprintf("cycles_warm_cache %ld\n", cycles3 - cycles2);
