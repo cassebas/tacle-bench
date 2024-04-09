@@ -42,8 +42,7 @@
 #define RISCV_CORE_CONFIG "rv32_i4k_d4k"
 #endif
 
-#define SYNBENCH_INPUTSIZE 64
-volatile bigstruct_t synbench_data[SYNBENCH_INPUTSIZE];
+volatile bigstruct_t synbench_data[SYNBENCH_DATASIZE];
 
 void adpcm_dec_decode( int );
 int adpcm_dec_filtez( int *bpl, int *dlt );
