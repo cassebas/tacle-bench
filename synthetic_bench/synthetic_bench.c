@@ -13,7 +13,7 @@ int32_t array_access_linear(volatile bigstruct_t *data)
 	int32_t sum = 0;
 	if (data != NULL) {
         for (int i=0; i<SYNBENCH_DATASIZE; i++) {
-            sum += data[i].data[i % SYNBENCH_DATASIZE];
+            sum += data[i].id;
         }
 	}
 	return sum;
@@ -22,8 +22,9 @@ int32_t array_access_linear(volatile bigstruct_t *data)
 void array_write_linear(volatile bigstruct_t *data)
 {
 	if (data != NULL) {
-        for (int j=0; j<BIGSTRUCT_DATASIZE; j+=4) {
+        for (int j=0; j<BIGSTRUCT_DATASIZE; j++) {
             for (int i=0; i<SYNBENCH_DATASIZE; i++) {
+                data[i].id = j;
                 data[i].data[j] = 0xff;
             }
         }

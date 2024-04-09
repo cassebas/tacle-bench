@@ -23,7 +23,7 @@
    If already defined in the CFLAGS (-DSYNBENCH_DATASIZE=...) then
    do nothing. */
 #ifndef SYNBENCH_DATASIZE
-#define SYNBENCH_DATASIZE 131072
+#define SYNBENCH_DATASIZE 65536
 #endif
 // To make bigstruct 64 bytes, which is equal to the line size of the caches
 // id + data == 64 bytes
@@ -36,11 +36,11 @@
  */
 
 /**
- * Type bigstruct_t is (with int32_t being 4 bytes) a 256 bytes struct.
+ * Type bigstruct_t is (with int8_t being 1 byte) a 64 bytes struct.
  */
 typedef struct bigstruct {
-	int32_t id;
-	int32_t data[BIGSTRUCT_DATASIZE];
+	int8_t id;
+	int8_t data[BIGSTRUCT_DATASIZE];
 } bigstruct_t;
 
 
