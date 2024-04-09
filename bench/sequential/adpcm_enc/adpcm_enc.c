@@ -27,10 +27,13 @@
 */
 #include <stdint.h>
 #include "kprintf.h"
+#include "../../../synthetic_bench/synthetic_bench.h"
 
 #ifndef RISCV_CORE_CONFIG
 #define RISCV_CORE_CONFIG "rv32_i4k_d4k"
 #endif
+
+volatile bigstruct_t synbench_data[SYNBENCH_DATASIZE];
 
 /* common sampling rate for sound cards on IBM/PC */
 #define SAMPLE_RATE 11025
@@ -754,7 +757,8 @@ void _Pragma( "entrypoint" ) adpcm_enc_main( void )
 
 int main( void )
 {
-  uintptr_t cycles1, cycles2, cycles3;
+  uintptr_t cycles1, cycles2, cycles3, cycles4, cycles5;
+  int sum_dummy;
 
   kprintf("riscv_core_config %s benchmark %s start\n",
           RISCV_CORE_CONFIG, "adpcm_enc");
@@ -764,13 +768,22 @@ int main( void )
   asm volatile ("csrr %0, mcycle" : "=r" (cycles2));
   adpcm_enc_main();
   asm volatile ("csrr %0, mcycle" : "=r" (cycles3));
+  array_write_linear(synbench_data);
+  asm volatile ("csrr %0, mcycle" : "=r" (cycles4));
+  adpcm_enc_main();
+  asm volatile ("csrr %0, mcycle" : "=r" (cycles5));
+  sum_dummy = array_access_linear(synbench_data);
   kprintf("riscv_core_config %s benchmark %s stop\n",
           RISCV_CORE_CONFIG, "adpcm_enc");
 
   kprintf("riscv_core_config %s benchmark %s ",
           RISCV_CORE_CONFIG, "adpcm_enc");
   kprintf("cycles_cold_cache %ld ", cycles2 - cycles1);
-  kprintf("cycles_warm_cache %ld\n", cycles3 - cycles2);
+  kprintf("cycles_warm_cache %ld ", cycles3 - cycles2);
+  kprintf("cycles_writeattack_cache %ld\n", cycles5 - cycles4);
+
+  kprintf("riscv_core_config %s benchmark %s sum_dummy=%d\n",
+          RISCV_CORE_CONFIG, "adpcm_enc", sum_dummy);
 
   return adpcm_enc_return();
 }
