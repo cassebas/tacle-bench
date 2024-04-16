@@ -31,6 +31,13 @@
 */
 
 
+#include <stdint.h>
+#include "kprintf.h"
+
+#ifndef RISCV_CORE_CONFIG
+#define RISCV_CORE_CONFIG "rocket64b2l2_monitor"
+#endif
+
 /*
   Forward declaration of functions
 */
@@ -149,8 +156,22 @@ void _Pragma( "entrypoint" ) binarysearch_main( void )
 
 int main( void )
 {
+  uintptr_t cycles1, cycles2, cycles3, cycles4, cycles5;
+  kprintf("riscv_core_config %s benchmark %s start\n",
+          RISCV_CORE_CONFIG, "binarysearch");
   binarysearch_init();
+  asm volatile ("csrr %0, mcycle" : "=r" (cycles1));
   binarysearch_main();
+  asm volatile ("csrr %0, mcycle" : "=r" (cycles2));
+  binarysearch_main();
+  asm volatile ("csrr %0, mcycle" : "=r" (cycles3));
+  kprintf("riscv_core_config %s benchmark %s stop\n",
+          RISCV_CORE_CONFIG, "binarysearch");
+
+  kprintf("riscv_core_config %s benchmark %s ",
+          RISCV_CORE_CONFIG, "binarysearch");
+  kprintf("cycles_cold_cache %ld ", cycles2 - cycles1);
+  kprintf("cycles_warm_cache %ld ", cycles3 - cycles2);
 
   return ( binarysearch_return() - ( -1 ) != 0 );
 }
