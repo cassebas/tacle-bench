@@ -72,7 +72,7 @@ typedef struct {
 */
 
 void huff_dec_init( void );
-int huff_dec_return( void );
+int __attribute__((aligned(64))) huff_dec_return( void );
 int huff_dec_end_of_data();
 int huff_dec_read_byte();
 void huff_dec_write_byte( char ch );
@@ -81,7 +81,7 @@ unsigned int huff_dec_read_code_n_bits( unsigned int n );
 void huff_dec_read_header( t_bin_val codes_table[ 257 ] );
 huff_dec_t_tree *huff_dec_tree_encoding( t_bin_val codes_table[ 257 ],
     huff_dec_t_tree heap[ 514 ] );
-void huff_dec_main( void );
+void __attribute__((aligned(64))) huff_dec_main( void );
 int main( void );
 
 
@@ -150,7 +150,7 @@ void huff_dec_init( void )
 }
 
 
-int huff_dec_return( void )
+int __attribute__((aligned(64))) huff_dec_return( void )
 {
   int i;
   _Pragma( "loopbound min 600 max 600" )
@@ -347,7 +347,7 @@ huff_dec_t_tree *huff_dec_tree_encoding( t_bin_val codes_table[ 257 ],
 }
 
 
-void _Pragma( "entrypoint" ) huff_dec_main( void )
+void __attribute__((aligned(64))) _Pragma( "entrypoint" ) huff_dec_main( void )
 /* Returned parameters: None
    Action: Decompresses with Huffman method all bytes read by the function
            'read_code_1_bit' and 'read_code_n_bits'

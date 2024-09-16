@@ -2202,7 +2202,7 @@ void gsm_enc_init( void )
   gsm_enc_state_ptr = gsm_enc_create();
 }
 
-int gsm_enc_return( void )
+int __attribute__((aligned(64))) gsm_enc_return( void )
 {
   return gsm_enc_result;
 }

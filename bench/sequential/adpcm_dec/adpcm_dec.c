@@ -58,8 +58,8 @@ int adpcm_dec_cos( int n );
 int adpcm_dec_sin( int n );
 
 void adpcm_dec_init();
-int adpcm_dec_return();
-void adpcm_dec_main();
+int __attribute__((aligned(64))) adpcm_dec_return();
+void __attribute__((aligned(64))) adpcm_dec_main();
 int main( void );
 
 
@@ -678,7 +678,7 @@ void adpcm_dec_init()
   }
 }
 
-int adpcm_dec_return()
+int __attribute__((aligned(64))) adpcm_dec_return()
 {
   int i;
   int check_sum = 0;
@@ -693,7 +693,7 @@ int adpcm_dec_return()
   Main functions
 */
 
-void _Pragma( "entrypoint" ) adpcm_dec_main( void )
+void __attribute__((aligned(64))) _Pragma( "entrypoint" ) adpcm_dec_main( void )
 {
   int i;
 

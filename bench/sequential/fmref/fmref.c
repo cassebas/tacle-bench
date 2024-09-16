@@ -65,14 +65,14 @@ void fmref_run_demod( FloatBuffer *fbin, FloatBuffer *fbout );
 void fmref_init_equalizer( EqualizerData *data );
 void fmref_run_equalizer( FloatBuffer *fbin, FloatBuffer *fbout,
                           EqualizerData *data );
-void fmref_main( void );
+void __attribute__((aligned(64))) fmref_main( void );
 
 void fmref_init( void )
 {
   // dummy init function
 }
 
-int fmref_return( void )
+int __attribute__((aligned(64))) fmref_return( void )
 {
   // dummy return value
   return 0;
@@ -104,7 +104,7 @@ int main( void )
 FloatBuffer fmref_fb1, fmref_fb2, fmref_fb3, fmref_fb4;
 LPFData fmref_lpf_data;
 
-void _Pragma( "entrypoint" ) fmref_main( void )
+void __attribute__((aligned(64))) _Pragma( "entrypoint" ) fmref_main( void )
 {
   int i;
   EqualizerData eq_data;

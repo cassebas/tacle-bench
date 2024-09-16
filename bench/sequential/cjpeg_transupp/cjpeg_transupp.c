@@ -45,13 +45,13 @@
 void cjpeg_transupp_initSeed( void );
 signed char cjpeg_transupp_randomInteger( void );
 void cjpeg_transupp_init( void );
-int cjpeg_transupp_return( void );
+int __attribute__((aligned(64))) cjpeg_transupp_return( void );
 void cjpeg_transupp_do_flip_v( j_compress_ptr );
 void cjpeg_transupp_do_rot_90( j_compress_ptr );
 void cjpeg_transupp_do_rot_180( j_compress_ptr );
 void cjpeg_transupp_do_rot_270( j_compress_ptr );
 void cjpeg_transupp_do_transverse( j_compress_ptr );
-void cjpeg_transupp_main( void );
+void __attribute__((aligned(64))) cjpeg_transupp_main( void );
 int main( void );
 
 
@@ -140,7 +140,7 @@ void cjpeg_transupp_init( void )
 }
 
 
-int cjpeg_transupp_return( void )
+int __attribute__((aligned(64))) cjpeg_transupp_return( void )
 {
   int checksum = 0;
   unsigned int i;
@@ -685,7 +685,7 @@ void cjpeg_transupp_do_transverse( j_compress_ptr dstinfo )
   Main functions
 */
 
-void _Pragma ( "entrypoint" ) cjpeg_transupp_main( void )
+void __attribute__((aligned(64))) _Pragma ( "entrypoint" ) cjpeg_transupp_main( void )
 {
   cjpeg_transupp_dstinfo.image_width = 227;
   cjpeg_transupp_dstinfo.image_height = 149;

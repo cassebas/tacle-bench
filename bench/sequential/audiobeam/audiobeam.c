@@ -38,8 +38,8 @@
 */
 
 void audiobeam_init();
-int audiobeam_return();
-void audiobeam_main( void );
+int __attribute__((aligned(64))) audiobeam_return();
+void __attribute__((aligned(64))) audiobeam_main( void );
 int main( void );
 void audiobeam_preprocess_delays( struct audiobeam_PreprocessedDelays
                                   prep_delays[  ], float *delays );
@@ -135,7 +135,7 @@ void audiobeam_init()
 }
 
 
-int audiobeam_return()
+int __attribute__((aligned(64))) audiobeam_return()
 {
   return ( audiobeam_checksum + 1 != 0 );
 }
@@ -572,7 +572,7 @@ void audiobeam_calc_single_pos( float source_location[ 3 ],
   Main functions
 */
 
-void _Pragma( "entrypoint" ) audiobeam_main( void )
+void __attribute__((aligned(64))) _Pragma( "entrypoint" ) audiobeam_main( void )
 {
   char hamming = 1;
   audiobeam_calc_single_pos( audiobeam_source_location,

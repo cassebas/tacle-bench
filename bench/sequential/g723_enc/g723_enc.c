@@ -111,8 +111,8 @@ int g723_enc_pack_output(
   int     bits );
 
 void g723_enc_init();
-int g723_enc_return();
-void g723_enc_main();
+int __attribute__((aligned(64))) g723_enc_return();
+void __attribute__((aligned(64))) g723_enc_main();
 int main( void );
 
 /*
@@ -830,7 +830,7 @@ void g723_enc_init()
 }
 
 
-int g723_enc_return()
+int __attribute__((aligned(64))) g723_enc_return()
 {
   int i;
   int check_sum = 0;
@@ -846,7 +846,7 @@ int g723_enc_return()
   Main functions
 */
 
-void _Pragma( "entrypoint" ) g723_enc_main()
+void __attribute__((aligned(64))) _Pragma( "entrypoint" ) g723_enc_main()
 {
 //  struct g72x_state state;
   short   sample_short; //mv

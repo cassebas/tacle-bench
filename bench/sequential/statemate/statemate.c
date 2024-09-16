@@ -73,8 +73,8 @@ void statemate_generic_FH_TUERMODUL_CTRL( void );
 void statemate_generic_EINKLEMMSCHUTZ_CTRL( void );
 void statemate_generic_BLOCK_ERKENNUNG_CTRL( void );
 void statemate_FH_DU( void );
-void statemate_main( void );
-int statemate_return ( void );
+void __attribute__((aligned(64))) statemate_main( void );
+int __attribute__((aligned(64))) statemate_return ( void );
 
 
 /*
@@ -1259,7 +1259,7 @@ void statemate_FH_DU( void )
   Main functions
 */
 
-int statemate_return()
+int __attribute__((aligned(64))) statemate_return()
 {
   unsigned long int checksum = 0;
   int index;
@@ -1269,7 +1269,7 @@ int statemate_return()
   return ( checksum != 32ul );
 }
 
-void _Pragma ( "entrypoint" ) statemate_main( void )
+void __attribute__((aligned(64))) _Pragma ( "entrypoint" ) statemate_main( void )
 {
   statemate_FH_DU();
 }

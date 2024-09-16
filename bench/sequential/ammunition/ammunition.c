@@ -46,8 +46,8 @@ void ammunition_reset_str_arithm( char *str, char *s, char *d, char *e,
 int ammunition_bits_test();
 int ammunition_arithm_test();
 void ammunition_init( void );
-int ammunition_return( void );
-void ammunition_main( void );
+int __attribute__((aligned(64))) ammunition_return( void );
+void __attribute__((aligned(64))) ammunition_main( void );
 int main( void );
 
 
@@ -1160,7 +1160,7 @@ void ammunition_init( void )
   ammunition_result = 0;
 }
 
-int ammunition_return( void )
+int __attribute__((aligned(64))) ammunition_return( void )
 {
   return ammunition_result;
 }
@@ -1169,7 +1169,7 @@ int ammunition_return( void )
   Main functions
 */
 
-void _Pragma( "entrypoint" ) ammunition_main( void )
+void __attribute__((aligned(64))) _Pragma( "entrypoint" ) ammunition_main( void )
 {
   ammunition_result |= ammunition_bits_test();
   ammunition_result |= ammunition_arithm_test();
