@@ -1,4 +1,4 @@
-CROSS_COMPILE = ../../../../vivado-risc-v/workspace/gcc/riscv/bin/riscv32-unknown-elf-
+CROSS_COMPILE ?= ../../../../vivado-risc-v/workspace/gcc/riscv/bin/riscv32-unknown-elf-
 
 CC=$(CROSS_COMPILE)gcc
 OBJCOPY=$(CROSS_COMPILE)objcopy
