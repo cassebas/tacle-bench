@@ -880,16 +880,18 @@ int main( void )
   uintptr_t cycles1, cycles2, cycles3;
 
   kprintf("riscv_core_config %s benchmark %s start\n",
-          RISCV_CORE_CONFIG, "g723_enc");
+          RISCV_CORE_CONFIG, "g723_enc_2");
   g723_enc_init();
   asm volatile ("csrr %0, mcycle" : "=r" (cycles1));
   g723_enc_main();
   asm volatile ("csrr %0, mcycle" : "=r" (cycles2));
   g723_enc_main();
   asm volatile ("csrr %0, mcycle" : "=r" (cycles3));
+  kprintf("riscv_core_config %s benchmark %s stop\n",
+          RISCV_CORE_CONFIG, "g723_enc_2");
 
   kprintf("riscv_core_config %s benchmark %s ",
-          RISCV_CORE_CONFIG, "g723_enc");
+          RISCV_CORE_CONFIG, "g723_enc_2");
   kprintf("cycles_cold_cache %ld ", cycles2 - cycles1);
   kprintf("cycles_warm_cache %ld\n", cycles3 - cycles2);
 
