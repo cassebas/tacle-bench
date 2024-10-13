@@ -10,7 +10,7 @@ ifneq ($(BENCHMARK_CONFIG),)
 endif
 
 CCFLAGS = $(CFLAGS)
-CCFLAGS += -mcmodel=medany -O2 -Wall -g
+CCFLAGS += -mcmodel=medany -O0 -Wall -g
 CCFLAGS += -fno-pic -fno-common
 
 LFLAGS = -static -nostartfiles -T main.lds
