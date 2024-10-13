@@ -2223,23 +2223,18 @@ void _Pragma( "entrypoint" ) gsm_enc_main( void )
 
 int main( void )
 {
-  uintptr_t cycles1, cycles2, cycles3;
+  uintptr_t cycles1, cycles2;
+  uintptr_t ret;
 
-  kprintf("riscv_core_config %s benchmark %s start\n",
-          RISCV_CORE_CONFIG, "gsm_enc_2");
   gsm_enc_init();
   asm volatile ("csrr %0, mcycle" : "=r" (cycles1));
   gsm_enc_main();
   asm volatile ("csrr %0, mcycle" : "=r" (cycles2));
-  gsm_enc_main();
-  asm volatile ("csrr %0, mcycle" : "=r" (cycles3));
-  kprintf("riscv_core_config %s benchmark %s stop\n",
-          RISCV_CORE_CONFIG, "gsm_enc_2");
+  ret = gsm_enc_return();
 
   kprintf("riscv_core_config %s benchmark %s ",
-          RISCV_CORE_CONFIG, "gsm_enc_2");
-  kprintf("cycles_cold_cache %ld ", cycles2 - cycles1);
-  kprintf("cycles_warm_cache %ld\n", cycles3 - cycles2);
+          RISCV_CORE_CONFIG, "gsm_enc");
+  kprintf("cycles_cold_cache %ld\n", cycles2 - cycles1);
 
-  return ( gsm_enc_return() );
+  return ret;
 }

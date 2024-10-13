@@ -187,24 +187,19 @@ void __attribute__((aligned(64))) _Pragma( "entrypoint" ) rijndael_dec_main( voi
 
 int main()
 {
-  uintptr_t cycles1, cycles2, cycles3;
+  uintptr_t cycles1, cycles2;
+  uintptr_t ret;
 
-  kprintf("riscv_core_config %s benchmark %s start\n",
-          RISCV_CORE_CONFIG, "rijndael_dec_2");
   rijndael_dec_init();
   asm volatile ("csrr %0, mcycle" : "=r" (cycles1));
   rijndael_dec_main();
   asm volatile ("csrr %0, mcycle" : "=r" (cycles2));
-  rijndael_dec_main();
-  asm volatile ("csrr %0, mcycle" : "=r" (cycles3));
-  kprintf("riscv_core_config %s benchmark %s stop\n",
-          RISCV_CORE_CONFIG, "rijndael_dec_2");
+  ret = rijndael_dec_return();
 
   kprintf("riscv_core_config %s benchmark %s ",
-          RISCV_CORE_CONFIG, "rijndael_dec_2");
-  kprintf("cycles_cold_cache %ld ", cycles2 - cycles1);
-  kprintf("cycles_warm_cache %ld\n", cycles3 - cycles2);
+          RISCV_CORE_CONFIG, "rijndael_dec");
+  kprintf("cycles_cold_cache %ld\n", cycles2 - cycles1);
 
-  return ( rijndael_dec_return() );
+  return ret;
 }
 
