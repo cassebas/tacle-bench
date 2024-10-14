@@ -17,15 +17,19 @@ LFLAGS = -static -nostartfiles -T main.lds
 
 BUILD_DIR = buildfiles
 TARGET = $(BUILD_DIR)/mpeg2.elf
+DISASSEMBLY = $(BUILD_DIR)/mpeg2-disassembly.txt
 
 SRC = $(CURDIR)
 OBJ = $(patsubst $(SRC)/%.c,$(BUILD_DIR)/%.o,$(wildcard $(SRC)/*.c))
 
-all: $(BUILD_DIR) $(TARGET)
+all: $(BUILD_DIR) $(TARGET) $(DISASSEMBLY)
 
 $(TARGET): $(OBJ)
 	$(CC) -o $@ $^ $(LFLAGS) head.S
 	$(OBJDUMP) -h -p $@
+
+$(DISASSEMBLY): $(TARGET)
+	$(OBJDUMP) -d -h -p $< > $@
 
 $(BUILD_DIR)/%.o: $(SRC)/%.c
 	$(CC) -c $(CCFLAGS) -o $@ $<
