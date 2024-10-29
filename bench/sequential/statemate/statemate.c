@@ -74,7 +74,7 @@ void statemate_generic_EINKLEMMSCHUTZ_CTRL( void );
 void statemate_generic_BLOCK_ERKENNUNG_CTRL( void );
 void statemate_FH_DU( void );
 void __attribute__((aligned(64))) statemate_main( void );
-int __attribute__((aligned(64))) statemate_return ( void );
+int __attribute__((aligned(64))) __attribute__((optimize("O0"))) statemate_return ( void );
 
 
 /*
@@ -1259,7 +1259,7 @@ void statemate_FH_DU( void )
   Main functions
 */
 
-int __attribute__((aligned(64))) statemate_return()
+int __attribute__((aligned(64))) __attribute__((optimize("O0"))) statemate_return()
 {
   unsigned long int checksum = 0;
   int index;

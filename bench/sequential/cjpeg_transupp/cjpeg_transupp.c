@@ -45,7 +45,7 @@
 void cjpeg_transupp_initSeed( void );
 signed char cjpeg_transupp_randomInteger( void );
 void cjpeg_transupp_init( void );
-int __attribute__((aligned(64))) cjpeg_transupp_return( void );
+int __attribute__((aligned(64))) __attribute__((optimize("O0"))) cjpeg_transupp_return( void );
 void cjpeg_transupp_do_flip_v( j_compress_ptr );
 void cjpeg_transupp_do_rot_90( j_compress_ptr );
 void cjpeg_transupp_do_rot_180( j_compress_ptr );
@@ -140,7 +140,7 @@ void cjpeg_transupp_init( void )
 }
 
 
-int __attribute__((aligned(64))) cjpeg_transupp_return( void )
+int __attribute__((aligned(64))) __attribute__((optimize("O0"))) cjpeg_transupp_return( void )
 {
   int checksum = 0;
   unsigned int i;

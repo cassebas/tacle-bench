@@ -61,7 +61,7 @@ int adpcm_enc_sin( int n );
 int adpcm_enc_abs( int n );
 void adpcm_enc_init( void );
 void __attribute__((aligned(64))) adpcm_enc_main( void );
-int __attribute__((aligned(64))) adpcm_enc_return( void );
+int __attribute__((aligned(64))) __attribute__((optimize("O0"))) adpcm_enc_return( void );
 int main( void );
 
 /*
@@ -724,7 +724,7 @@ void adpcm_enc_init( void )
 }
 
 
-int __attribute__((aligned(64))) adpcm_enc_return( void )
+int __attribute__((aligned(64))) __attribute__((optimize("O0"))) adpcm_enc_return( void )
 {
   int i;
   int check_sum = 0;

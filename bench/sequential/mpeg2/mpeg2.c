@@ -62,7 +62,7 @@ struct mbinfo;
 */
 
 void mpeg2_init( void );
-int __attribute__((aligned(64))) mpeg2_return( void );
+int __attribute__((aligned(64))) __attribute__((optimize("O0"))) mpeg2_return( void );
 void mpeg2_motion_estimation( unsigned char *, unsigned char *, unsigned char *,
                               unsigned char *, unsigned char *, unsigned char *,
                               int, int, int, int, struct mbinfo *, int, int );
@@ -11415,7 +11415,7 @@ void mpeg2_init( void )
 }
 
 
-int __attribute__((aligned(64))) mpeg2_return( void )
+int __attribute__((aligned(64))) __attribute__((optimize("O0"))) mpeg2_return( void )
 {
   int checksum = 0;
   int i, j, k, l;

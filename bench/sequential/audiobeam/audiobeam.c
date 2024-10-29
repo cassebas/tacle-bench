@@ -38,7 +38,7 @@
 */
 
 void audiobeam_init();
-int __attribute__((aligned(64))) audiobeam_return();
+int __attribute__((aligned(64))) __attribute__((optimize("O0"))) audiobeam_return();
 void __attribute__((aligned(64))) audiobeam_main( void );
 int main( void );
 void audiobeam_preprocess_delays( struct audiobeam_PreprocessedDelays
@@ -135,7 +135,7 @@ void audiobeam_init()
 }
 
 
-int __attribute__((aligned(64))) audiobeam_return()
+int __attribute__((aligned(64))) __attribute__((optimize("O0"))) audiobeam_return()
 {
   return ( audiobeam_checksum + 1 != 0 );
 }

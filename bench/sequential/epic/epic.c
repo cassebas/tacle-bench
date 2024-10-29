@@ -1122,7 +1122,7 @@ void __attribute__((aligned(64))) _Pragma( "entrypoint" ) epic_main( void )
                   epic_hi_filter, FILTER_SIZE );
 }
 
-int __attribute__((aligned(64))) epic_return()
+int __attribute__((aligned(64))) __attribute__((optimize("O0"))) epic_return()
 {
   int i;
   int checksum = 0;

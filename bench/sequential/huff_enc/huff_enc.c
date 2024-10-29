@@ -72,7 +72,7 @@ typedef struct {
 */
 
 void huff_enc_init( void );
-int __attribute__((aligned(64))) huff_enc_return( void );
+int __attribute__((aligned(64))) __attribute__((optimize("O0"))) huff_enc_return( void );
 void huff_enc_beginning_of_data();
 int huff_enc_end_of_data();
 int huff_enc_read_byte();
@@ -158,7 +158,7 @@ void huff_enc_init( void )
 }
 
 
-int __attribute__((aligned(64))) huff_enc_return( void )
+int __attribute__((aligned(64))) __attribute__((optimize("O0"))) huff_enc_return( void )
 {
   int i;
   _Pragma( "loopbound min 419 max 419" )

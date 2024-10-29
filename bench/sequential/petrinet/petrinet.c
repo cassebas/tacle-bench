@@ -45,7 +45,7 @@ int petrinet_main_iters_dummy_i = 0,
   Forward declaration of functions
 */
 void petrinet_init( void );
-int __attribute__((aligned(64))) petrinet_return( void );
+int __attribute__((aligned(64))) __attribute__((optimize("O0"))) petrinet_return( void );
 void __attribute__((aligned(64))) petrinet_main( void );
 int main( void );
 
@@ -957,7 +957,7 @@ void petrinet_init( void )
 }
 
 
-int __attribute__((aligned(64))) petrinet_return( void )
+int __attribute__((aligned(64))) __attribute__((optimize("O0"))) petrinet_return( void )
 {
   // TODO: use something from the Px_... arrays
   int checksum = 0;

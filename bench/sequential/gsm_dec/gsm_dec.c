@@ -612,7 +612,7 @@ void gsm_dec_init( void )
   gsm_dec_state_ptr = gsm_dec_create();
 }
 
-int __attribute__((aligned(64))) gsm_dec_return( void )
+int __attribute__((aligned(64))) __attribute__((optimize("O0"))) gsm_dec_return( void )
 {
   return gsm_dec_result;
 }

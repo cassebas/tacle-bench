@@ -76,7 +76,7 @@ void cjpeg_wrbmp_write_colormap( cjpeg_wrbmp_j_decompress_ptr
 int cjpeg_wrbmp_putc_modified( int character );
 void cjpeg_wrbmp_init();
 void __attribute__((aligned(64))) cjpeg_wrbmp_main();
-int __attribute__((aligned(64))) cjpeg_wrbmp_return();
+int __attribute__((aligned(64))) __attribute__((optimize("O0"))) cjpeg_wrbmp_return();
 int __attribute__((aligned(64))) main();
 
 /*
@@ -208,7 +208,7 @@ void __attribute__((aligned(64))) _Pragma( "entrypoint" ) cjpeg_wrbmp_main()
   cjpeg_wrbmp_write_colormap(    &cjpeg_wrbmp_jpeg_dec_2, 768, 4, 1 );
 }
 
-int __attribute__((aligned(64))) cjpeg_wrbmp_return()
+int __attribute__((aligned(64))) __attribute__((optimize("O0"))) cjpeg_wrbmp_return()
 {
   return ( cjpeg_wrbmp_checksum  + ( -209330 ) ) != 0;
 }

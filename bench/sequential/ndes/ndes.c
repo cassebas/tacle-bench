@@ -59,7 +59,7 @@ void ndes_cyfun( unsigned long ir, ndes_great k, unsigned long *iout );
 unsigned long ndes_getbit( ndes_immense source, int bitno, int nbits );
 void ndes_ks( /*immense key, */int n, ndes_great *kn );
 void ndes_init( void );
-int __attribute__((aligned(64))) ndes_return( void );
+int __attribute__((aligned(64))) __attribute__((optimize("O0"))) ndes_return( void );
 void __attribute__((aligned(64))) ndes_main( void );
 int main( void );
 
@@ -375,7 +375,7 @@ void ndes_ks( /*ndes_immense key, */int n, ndes_great *kn )
   }
 }
 
-int __attribute__((aligned(64))) ndes_return()
+int __attribute__((aligned(64))) __attribute__((optimize("O0"))) ndes_return()
 {
   return ( ndes_icd.r + ndes_icd.l  + ( -8390656 ) ) != 0 ;
 }

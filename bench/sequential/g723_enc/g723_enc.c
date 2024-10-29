@@ -111,7 +111,7 @@ int g723_enc_pack_output(
   int     bits );
 
 void g723_enc_init();
-int __attribute__((aligned(64))) g723_enc_return();
+int __attribute__((aligned(64))) __attribute__((optimize("O0"))) g723_enc_return();
 void __attribute__((aligned(64))) g723_enc_main();
 int main( void );
 
@@ -830,7 +830,7 @@ void g723_enc_init()
 }
 
 
-int __attribute__((aligned(64))) g723_enc_return()
+int __attribute__((aligned(64))) __attribute__((optimize("O0"))) g723_enc_return()
 {
   int i;
   int check_sum = 0;

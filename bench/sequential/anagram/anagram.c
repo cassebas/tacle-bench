@@ -220,7 +220,7 @@ typedef anagram_Letter *anagram_PLetter;
 
 void anagram_init( void );
 void __attribute__((aligned(64))) anagram_main( void );
-int __attribute__((aligned(64))) anagram_return( void );
+int __attribute__((aligned(64))) __attribute__((optimize("O0"))) anagram_return( void );
 int anagram_ch2i( int ch );
 void anagram_AddWords( void );
 void anagram_BuildMask( char const *pchPhrase );
@@ -346,7 +346,7 @@ void anagram_init( void )
 }
 
 
-int __attribute__((aligned(64))) anagram_return( void )
+int __attribute__((aligned(64))) __attribute__((optimize("O0"))) anagram_return( void )
 {
   int i;
   char const *answer = "duke yip arm";

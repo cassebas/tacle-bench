@@ -39,7 +39,7 @@
 */
 
 void h264_dec_init ();
-int __attribute__((aligned(64))) h264_dec_return ();
+int __attribute__((aligned(64))) __attribute__((optimize("O0"))) h264_dec_return ();
 void h264_dec_decode_one_macroblock( struct h264_dec_img_par *img );
 void __attribute__((aligned(64))) h264_dec_main( void );
 int main( void );
@@ -62,7 +62,7 @@ struct h264_dec_img_par h264_dec_img;
   Initialization- and return-value-related functions
 */
 
-int __attribute__((aligned(64))) h264_dec_return ()
+int __attribute__((aligned(64))) __attribute__((optimize("O0"))) h264_dec_return ()
 {
   return ( h264_dec_img_mpr[ 0 ][ 0 ] + h264_dec_dec_picture_imgUV[ 0 ][ 0 ][ 0 ] + 128 !=
            0 );

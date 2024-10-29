@@ -72,7 +72,7 @@ void fmref_init( void )
   // dummy init function
 }
 
-int __attribute__((aligned(64))) fmref_return( void )
+int __attribute__((aligned(64))) __attribute__((optimize("O0"))) fmref_return( void )
 {
   // dummy return value
   return 0;

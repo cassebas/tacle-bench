@@ -678,7 +678,7 @@ void adpcm_dec_init()
   }
 }
 
-int __attribute__((aligned(64))) adpcm_dec_return()
+int __attribute__((aligned(64))) __attribute__((optimize("O0"))) adpcm_dec_return()
 {
   int i;
   int check_sum = 0;

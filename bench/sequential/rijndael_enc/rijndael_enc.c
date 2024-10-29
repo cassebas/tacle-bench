@@ -62,7 +62,7 @@ int rijndael_enc_checksum = 0;
   Forward declaration of functions
 */
 void rijndael_enc_init( void );
-int __attribute__((aligned(64))) rijndael_enc_return( void );
+int __attribute__((aligned(64))) __attribute__((optimize("O0"))) rijndael_enc_return( void );
 void rijndael_enc_fillrand( unsigned char *buf, int len );
 void rijndael_enc_encfile( struct rijndael_enc_FILE *fin, struct aes *ctx );
 void __attribute__((aligned(64))) rijndael_enc_main( void );
@@ -119,7 +119,7 @@ void rijndael_enc_init( void )
   rijndael_enc_key_len = i / 2;
 }
 
-int __attribute__((aligned(64))) rijndael_enc_return( void )
+int __attribute__((aligned(64))) __attribute__((optimize("O0"))) rijndael_enc_return( void )
 {
   return ( ( rijndael_enc_checksum == ( int )249509 ) ? 0 : -1 );
 }

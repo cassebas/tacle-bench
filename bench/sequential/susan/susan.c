@@ -2500,7 +2500,7 @@ void __attribute__((aligned(64))) _Pragma( "entrypoint" ) susan_main( void )
   susan_wccfreeall();
 }
 
-int __attribute__((aligned(64))) susan_return( void )
+int __attribute__((aligned(64))) __attribute__((optimize("O0"))) susan_return( void )
 {
   return 0;
 }
