@@ -64,7 +64,7 @@ int dijkstra_checksum = 0;
 */
 void dijkstra_init( void );
 int __attribute__((aligned(64))) dijkstra_return( void );
-int dijkstra_enqueue( int node, int dist, int prev );
+int __attribute__((aligned(64))) dijkstra_enqueue( int node, int dist, int prev );
 void dijkstra_dequeue( int *node, int *dist, int *prev );
 int dijkstra_qcount( void );
 int dijkstra_find( int chStart, int chEnd );
@@ -94,7 +94,7 @@ int __attribute__((aligned(64))) dijkstra_return( void )
   return ( ( dijkstra_checksum == 25 ) ? 0 : -1 );
 }
 
-int dijkstra_enqueue( int node, int dist, int prev )
+int __attribute__((aligned(64))) dijkstra_enqueue( int node, int dist, int prev )
 {
   struct _QITEM *newItem = &dijkstra_queueItems[ dijkstra_queueNext ];
   struct _QITEM *last = dijkstra_queueHead;

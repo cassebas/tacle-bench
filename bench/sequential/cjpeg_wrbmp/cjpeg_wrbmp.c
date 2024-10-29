@@ -77,7 +77,7 @@ int cjpeg_wrbmp_putc_modified( int character );
 void cjpeg_wrbmp_init();
 void __attribute__((aligned(64))) cjpeg_wrbmp_main();
 int __attribute__((aligned(64))) cjpeg_wrbmp_return();
-int main();
+int __attribute__((aligned(64))) main();
 
 /*
    Initialization functions
@@ -213,7 +213,7 @@ int __attribute__((aligned(64))) cjpeg_wrbmp_return()
   return ( cjpeg_wrbmp_checksum  + ( -209330 ) ) != 0;
 }
 
-int main( void )
+int __attribute__((aligned(64))) main( void )
 {
   uintptr_t cycles1, cycles2;
   uintptr_t ret;
