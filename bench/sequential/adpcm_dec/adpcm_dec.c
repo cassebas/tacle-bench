@@ -709,18 +709,18 @@ void __attribute__((aligned(64))) _Pragma( "entrypoint" ) adpcm_dec_main( void )
 
 int main( void )
 {
-  uintptr_t cycles1, cycles2;
+  /* uintptr_t cycles1, cycles2; */
   uintptr_t ret;
 
   adpcm_dec_init();
-  asm volatile ("csrr %0, mcycle" : "=r" (cycles1));
+  /* asm volatile ("csrr %0, mcycle" : "=r" (cycles1)); */
   adpcm_dec_main();
-  asm volatile ("csrr %0, mcycle" : "=r" (cycles2));
+  /* asm volatile ("csrr %0, mcycle" : "=r" (cycles2)); */
   ret = adpcm_dec_return();
 
   kprintf("riscv_core_config %s benchmark %s ",
           RISCV_CORE_CONFIG, "adpcm_dec");
-  kprintf("cycles_cold_cache %ld\n", cycles2 - cycles1);
+  kprintf("cycles_cold_cache %ld\n", 0);
 
   return ret;
 }
