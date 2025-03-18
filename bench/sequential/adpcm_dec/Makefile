@@ -10,7 +10,7 @@ ifneq ($(BENCHMARK_CONFIG),)
 endif
 
 CCFLAGS = $(CFLAGS)
-CCFLAGS += -mcmodel=medany -O2 -Wall
+CCFLAGS += -mcmodel=medany -O0 -Wall
 CCFLAGS += -fno-pic -fno-common
 # Maybe align all functions to their next 64-byte boundaries?
 ifneq ($(FALIGN_FUNCTIONS),)
