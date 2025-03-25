@@ -712,18 +712,28 @@ void __attribute__((aligned(64))) _Pragma ( "entrypoint" ) cjpeg_transupp_main( 
 
 int main( void )
 {
+#ifdef EXP_USE_MCYCLE
   uintptr_t cycles1, cycles2;
+#endif
   uintptr_t ret;
 
   cjpeg_transupp_init();
+#ifdef EXP_USE_MCYCLE
   asm volatile ("csrr %0, mcycle" : "=r" (cycles1));
+#endif
   cjpeg_transupp_main();
+#ifdef EXP_USE_MCYCLE
   asm volatile ("csrr %0, mcycle" : "=r" (cycles2));
+#endif
   ret = cjpeg_transupp_return();
 
   kprintf("riscv_core_config %s benchmark %s ",
           RISCV_CORE_CONFIG, "cjpeg_transup");
+#ifdef EXP_USE_MCYCLE
   kprintf("cycles_cold_cache %ld\n", cycles2 - cycles1);
+#else
+  kprintf("cycles_cold_cache %ld\n", 0);
+#endif
 
   return ( ret - 1624 != 0 );
 }

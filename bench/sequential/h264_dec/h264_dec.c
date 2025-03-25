@@ -602,18 +602,28 @@ void __attribute__((aligned(64))) _Pragma( "entrypoint" ) h264_dec_main( void )
 
 int main( void )
 {
+#ifdef EXP_USE_MCYCLE
   uintptr_t cycles1, cycles2;
+#endif
   uintptr_t ret;
 
   h264_dec_init();
+#ifdef EXP_USE_MCYCLE
   asm volatile ("csrr %0, mcycle" : "=r" (cycles1));
+#endif
   h264_dec_main();
+#ifdef EXP_USE_MCYCLE
   asm volatile ("csrr %0, mcycle" : "=r" (cycles2));
+#endif
   ret = h264_dec_return();
 
   kprintf("riscv_core_config %s benchmark %s ",
           RISCV_CORE_CONFIG, "h264_dec");
+#ifdef EXP_USE_MCYCLE
   kprintf("cycles_cold_cache %ld\n", cycles2 - cycles1);
+#else
+  kprintf("cycles_cold_cache %ld\n", 0);
+#endif
 
   return ret;
 }

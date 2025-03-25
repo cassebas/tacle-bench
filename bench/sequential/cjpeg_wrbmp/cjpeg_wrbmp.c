@@ -215,18 +215,28 @@ int __attribute__((aligned(64))) __attribute__((optimize("O0"))) cjpeg_wrbmp_ret
 
 int __attribute__((aligned(64))) main( void )
 {
+#ifdef EXP_USE_MCYCLE
   uintptr_t cycles1, cycles2;
+#endif
   uintptr_t ret;
 
   cjpeg_wrbmp_init();
+#ifdef EXP_USE_MCYCLE
   asm volatile ("csrr %0, mcycle" : "=r" (cycles1));
+#endif
   cjpeg_wrbmp_main();
+#ifdef EXP_USE_MCYCLE
   asm volatile ("csrr %0, mcycle" : "=r" (cycles2));
+#endif
   ret = cjpeg_wrbmp_return();
 
   kprintf("riscv_core_config %s benchmark %s ",
           RISCV_CORE_CONFIG, "cjpeg_wrbmp");
+#ifdef EXP_USE_MCYCLE
   kprintf("cycles_cold_cache %ld\n", cycles2 - cycles1);
+#else
+  kprintf("cycles_cold_cache %ld\n", 0);
+#endif
 
   return ret;
 }

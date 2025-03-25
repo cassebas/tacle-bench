@@ -2223,18 +2223,28 @@ void _Pragma( "entrypoint" ) gsm_enc_main( void )
 
 int main( void )
 {
+#ifdef EXP_USE_MCYCLE
   uintptr_t cycles1, cycles2;
+#endif
   uintptr_t ret;
 
   gsm_enc_init();
+#ifdef EXP_USE_MCYCLE
   asm volatile ("csrr %0, mcycle" : "=r" (cycles1));
+#endif
   gsm_enc_main();
+#ifdef EXP_USE_MCYCLE
   asm volatile ("csrr %0, mcycle" : "=r" (cycles2));
+#endif
   ret = gsm_enc_return();
 
   kprintf("riscv_core_config %s benchmark %s ",
           RISCV_CORE_CONFIG, "gsm_enc");
+#ifdef EXP_USE_MCYCLE
   kprintf("cycles_cold_cache %ld\n", cycles2 - cycles1);
+#else
+  kprintf("cycles_cold_cache %ld\n", 0);
+#endif
 
   return ret;
 }

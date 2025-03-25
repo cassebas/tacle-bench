@@ -13210,18 +13210,28 @@ void __attribute__((aligned(64))) _Pragma ( "entrypoint" ) mpeg2_main( void )
 
 int main( void )
 {
+#ifdef EXP_USE_MCYCLE
   uintptr_t cycles1, cycles2;
+#endif
   uintptr_t ret;
 
   mpeg2_init();
+#ifdef EXP_USE_MCYCLE
   asm volatile ("csrr %0, mcycle" : "=r" (cycles1));
+#endif
   mpeg2_main();
+#ifdef EXP_USE_MCYCLE
   asm volatile ("csrr %0, mcycle" : "=r" (cycles2));
+#endif
   ret = mpeg2_return();
 
   kprintf("riscv_core_config %s benchmark %s ",
           RISCV_CORE_CONFIG, "mpeg2");
+#ifdef EXP_USE_MCYCLE
   kprintf("cycles_cold_cache %ld\n", cycles2 - cycles1);
+#else
+  kprintf("cycles_cold_cache %ld\n", 0);
+#endif
 
   return ( ret - ( -116 ) != 0 );
 }

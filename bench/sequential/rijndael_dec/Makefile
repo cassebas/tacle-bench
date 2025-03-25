@@ -9,13 +9,26 @@ ifneq ($(BENCHMARK_CONFIG),)
 	CFLAGS += -DRISCV_CORE_CONFIG=\"$(BENCHMARK_CONFIG)\"
 endif
 
-CCFLAGS = $(CFLAGS)
-CCFLAGS += -mcmodel=medany -O2 -Wall
-CCFLAGS += -fno-pic -fno-common
 # Maybe align all functions to their next 64-byte boundaries?
 ifneq ($(FALIGN_FUNCTIONS),)
 	CFLAGS += -falign-functions=64
 endif
+
+# Maybe enable measurements with the mcyle instruction
+ifneq ($(EXP_USE_MCYCLE),)
+	CFLAGS += -DEXP_USE_MCYCLE
+endif
+
+# Maybe disable compiler optimization, if CC_OPT_O0 is defined
+ifneq ($(CC_OPT_O0),)
+	CFLAGS += -O0
+else
+	CFLAGS += -O2
+endif
+
+CCFLAGS = $(CFLAGS)
+CCFLAGS += -mcmodel=medany -Wall
+CCFLAGS += -fno-pic -fno-common
 
 LFLAGS = -static -nostartfiles -T main.lds
 
