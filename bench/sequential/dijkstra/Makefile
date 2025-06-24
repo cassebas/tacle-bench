@@ -30,7 +30,7 @@ CCFLAGS = $(CFLAGS)
 CCFLAGS += -mcmodel=medany -Wall
 CCFLAGS += -fno-pic -fno-common
 
-LFLAGS = -static -nostartfiles -T main.lds
+LFLAGS = -static -nostartfiles -T main_endmark.lds
 
 BUILD_DIR = buildfiles
 TARGET = $(BUILD_DIR)/dijkstra.elf

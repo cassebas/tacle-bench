@@ -209,6 +209,7 @@ int main( void )
 #ifdef EXP_USE_MCYCLE
   asm volatile ("csrr %0, mcycle" : "=r" (cycles2));
 #endif
+  dijkstra_endmark();
   ret = dijkstra_return();
 
   kprintf("riscv_core_config %s benchmark %s ",
