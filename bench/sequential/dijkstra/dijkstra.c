@@ -63,12 +63,12 @@ int dijkstra_checksum = 0;
   Forward declaration of functions
 */
 void dijkstra_init( void );
-int __attribute__((aligned(64))) __attribute__((optimize("O0"))) dijkstra_return( void );
-int __attribute__((aligned(64))) dijkstra_enqueue( int node, int dist, int prev );
+int dijkstra_return( void );
+int dijkstra_enqueue( int node, int dist, int prev );
 void dijkstra_dequeue( int *node, int *dist, int *prev );
 int dijkstra_qcount( void );
 int dijkstra_find( int chStart, int chEnd );
-void __attribute__((aligned(64))) dijkstra_main( void );
+void dijkstra_main( void );
 int main( void );
 
 void dijkstra_init( void )
@@ -89,12 +89,12 @@ void dijkstra_init( void )
   dijkstra_checksum = 0;
 }
 
-int __attribute__((aligned(64))) __attribute__((optimize("O0")))  dijkstra_return( void )
+int dijkstra_return( void )
 {
   return ( ( dijkstra_checksum == 25 ) ? 0 : -1 );
 }
 
-int __attribute__((aligned(64))) dijkstra_enqueue( int node, int dist, int prev )
+int dijkstra_enqueue( int node, int dist, int prev )
 {
   struct _QITEM *newItem = &dijkstra_queueItems[ dijkstra_queueNext ];
   struct _QITEM *last = dijkstra_queueHead;
@@ -177,7 +177,7 @@ int dijkstra_find( int chStart, int chEnd )
   return 0;
 }
 
-void __attribute__((aligned(64))) _Pragma( "entrypoint" ) dijkstra_main( void )
+void _Pragma( "entrypoint" ) dijkstra_main( void )
 {
   int i, j;
 

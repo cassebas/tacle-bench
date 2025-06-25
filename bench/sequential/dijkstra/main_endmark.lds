@@ -2,8 +2,9 @@ OUTPUT_ARCH("riscv")
 ENTRY(_start)
 
 MEMORY {
-  memory_mem     (rwx) : ORIGIN = 0x80000000, LENGTH = 0x0FFFF00
-  memory_mem_ext (rwx) : ORIGIN = 0x80FFFF00, LENGTH = 0x0000100
+  memory_mem_text (rwx) : ORIGIN = 0x80000000, LENGTH = 0x0000F00
+  memory_mem_ext  (rwx) : ORIGIN = 0x80000F00, LENGTH = 0x0000100
+  memory_mem_rest (rwx) : ORIGIN = 0x80001000, LENGTH = 0x0FFF000
 }
 
 PHDRS {
@@ -31,13 +32,13 @@ SECTIONS {
     *(.eh_frame)
     *(.rodata .rodata.* .gnu.linkonce.r.*)
     *(.srodata .srodata.*)
-  } >memory_mem  :text
+  } >memory_mem_text  :text
 
   .data : {
     *(.data .data.* .gnu.linkonce.d.*)
     *(.sdata .sdata.* .gnu.linkonce.s.*)
     *(.tohost)
-  } >memory_mem  :data
+  } >memory_mem_rest  :data
 
   .bss : {
     PROVIDE(_fbss = .);
@@ -46,7 +47,7 @@ SECTIONS {
     *(.bss .bss.* .gnu.linkonce.b.*)
     . = ALIGN(8);
     PROVIDE(_ebss = .);
-  } >memory_mem
+  } >memory_mem_rest
 
   .note (INFO) : {
     *(.note .note.*)
