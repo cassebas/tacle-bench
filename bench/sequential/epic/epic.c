@@ -39,6 +39,8 @@
 #ifndef RISCV_CORE_CONFIG
 #define RISCV_CORE_CONFIG "rv32_i4k_d4k"
 #endif
+#include "endmark.h"
+
 
 #include "epic.h"
 
@@ -594,7 +596,7 @@ void epic_internal_filter( float *image, int x_dim, int y_dim, float *filt,
                            int ygrid_step, float *result );
 void epic_reflect1( float *filt, int x_dim, int y_dim, int x_pos, int y_pos,
                     float *result, int f_or_e );
-void __attribute__((aligned(64))) epic_main( void );
+void epic_main( void );
 int main( void );
 
 
@@ -1116,13 +1118,13 @@ void epic_reflect1( float *filt, int x_dim, int y_dim, int x_pos, int y_pos,
   Main functions
 */
 
-void __attribute__((aligned(64))) _Pragma( "entrypoint" ) epic_main( void )
+void _Pragma( "entrypoint" ) epic_main( void )
 {
   epic_build_pyr( epic_image, X_SIZE, Y_SIZE, NUM_LEVELS, epic_lo_filter,
                   epic_hi_filter, FILTER_SIZE );
 }
 
-int __attribute__((aligned(64))) __attribute__((optimize("O0"))) epic_return()
+int epic_return()
 {
   int i;
   int checksum = 0;
@@ -1147,6 +1149,7 @@ int main( void )
 #ifdef EXP_USE_MCYCLE
   asm volatile ("csrr %0, mcycle" : "=r" (cycles2));
 #endif
+  epic_endmark();
   ret = epic_return();
 
   kprintf("riscv_core_config %s benchmark %s ",

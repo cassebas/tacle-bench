@@ -22,6 +22,8 @@
 #ifndef RISCV_CORE_CONFIG
 #define RISCV_CORE_CONFIG "rv32_i4k_d4k"
 #endif
+#include "endmark.h"
+
 
 #include "input.h"
 
