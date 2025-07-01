@@ -29,14 +29,13 @@ endif
 # Maybe use the special endmark function in the C-source
 ifneq ($(ENDMARK_FUNCTION),)
 	CFLAGS += -DENDMARK_FUNCTION
-	LFLAGS = -static -nostartfiles -T main_endmark.lds
-else
-	LFLAGS = -static -nostartfiles -T main.lds
 endif
 
 CCFLAGS = $(CFLAGS)
 CCFLAGS += -mcmodel=medany -Wall
 CCFLAGS += -fno-pic -fno-common
+
+LFLAGS = -static -nostartfiles -T main.lds
 
 BUILD_DIR = buildfiles
 

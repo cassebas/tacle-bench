@@ -31,7 +31,7 @@
 #define RISCV_CORE_CONFIG "rv32_i4k_d4k"
 #endif
 
-#ifndef ENDMARK_FUNCTION
+#ifdef ENDMARK_FUNCTION
 #include "endmark.h"
 #endif
 
