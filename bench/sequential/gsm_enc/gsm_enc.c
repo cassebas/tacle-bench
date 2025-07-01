@@ -11,6 +11,11 @@
 #define RISCV_CORE_CONFIG "rv32_i4k_d4k"
 #endif
 
+#ifndef ENDMARK_FUNCTION
+#include "endmark.h"
+#endif
+
+
 #include "private.h"
 
 /*
@@ -2202,7 +2207,7 @@ void gsm_enc_init( void )
   gsm_enc_state_ptr = gsm_enc_create();
 }
 
-int __attribute__((aligned(64))) __attribute__((optimize("O0"))) gsm_enc_return( void )
+int gsm_enc_return( void )
 {
   return gsm_enc_result;
 }
@@ -2235,6 +2240,9 @@ int main( void )
   gsm_enc_main();
 #ifdef EXP_USE_MCYCLE
   asm volatile ("csrr %0, mcycle" : "=r" (cycles2));
+#endif
+#ifdef ENDMARK_FUNCTION
+  benchmark_endmark();
 #endif
   ret = gsm_enc_return();
 

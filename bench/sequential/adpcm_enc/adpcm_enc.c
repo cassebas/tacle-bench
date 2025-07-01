@@ -32,6 +32,11 @@
 #define RISCV_CORE_CONFIG "rv32_i4k_d4k"
 #endif
 
+#ifndef ENDMARK_FUNCTION
+#include "endmark.h"
+#endif
+
+
 /* common sampling rate for sound cards on IBM/PC */
 #define SAMPLE_RATE 11025
 
@@ -60,8 +65,8 @@ int adpcm_enc_cos( int n );
 int adpcm_enc_sin( int n );
 int adpcm_enc_abs( int n );
 void adpcm_enc_init( void );
-void __attribute__((aligned(64))) adpcm_enc_main( void );
-int __attribute__((aligned(64))) __attribute__((optimize("O0"))) adpcm_enc_return( void );
+void adpcm_enc_main( void );
+int adpcm_enc_return( void );
 int main( void );
 
 /*
@@ -724,7 +729,7 @@ void adpcm_enc_init( void )
 }
 
 
-int __attribute__((aligned(64))) __attribute__((optimize("O0"))) adpcm_enc_return( void )
+int adpcm_enc_return( void )
 {
   int i;
   int check_sum = 0;
@@ -741,7 +746,7 @@ int __attribute__((aligned(64))) __attribute__((optimize("O0"))) adpcm_enc_retur
   Main functions
 */
 
-void __attribute__((aligned(64))) _Pragma( "entrypoint" ) adpcm_enc_main( void )
+void _Pragma( "entrypoint" ) adpcm_enc_main( void )
 {
   int i;
   /* MAX: 2 */
@@ -766,6 +771,9 @@ int main( void )
   adpcm_enc_main();
 #ifdef EXP_USE_MCYCLE
   asm volatile ("csrr %0, mcycle" : "=r" (cycles2));
+#endif
+#ifdef ENDMARK_FUNCTION
+  benchmark_endmark();
 #endif
   ret = adpcm_enc_return();
 

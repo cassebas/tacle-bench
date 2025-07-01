@@ -23,6 +23,9 @@
 #define RISCV_CORE_CONFIG "rv32_i4k_d4k"
 #endif
 
+#ifndef ENDMARK_FUNCTION
+#include "endmark.h"
+#endif
 
 /*
   Declaration of data types
@@ -111,8 +114,8 @@ int g723_enc_pack_output(
   int     bits );
 
 void g723_enc_init();
-int __attribute__((aligned(64))) __attribute__((optimize("O0"))) g723_enc_return();
-void __attribute__((aligned(64))) g723_enc_main();
+int g723_enc_return();
+void g723_enc_main();
 int main( void );
 
 /*
@@ -830,7 +833,7 @@ void g723_enc_init()
 }
 
 
-int __attribute__((aligned(64))) __attribute__((optimize("O0"))) g723_enc_return()
+int g723_enc_return()
 {
   int i;
   int check_sum = 0;
@@ -846,7 +849,7 @@ int __attribute__((aligned(64))) __attribute__((optimize("O0"))) g723_enc_return
   Main functions
 */
 
-void __attribute__((aligned(64))) _Pragma( "entrypoint" ) g723_enc_main()
+void _Pragma( "entrypoint" ) g723_enc_main()
 {
 //  struct g72x_state state;
   short   sample_short; //mv
@@ -889,6 +892,9 @@ int main( void )
   g723_enc_main();
 #ifdef EXP_USE_MCYCLE
   asm volatile ("csrr %0, mcycle" : "=r" (cycles2));
+#endif
+#ifdef ENDMARK_FUNCTION
+  benchmark_endmark();
 #endif
   ret = g723_enc_return();
 

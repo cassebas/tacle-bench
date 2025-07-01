@@ -35,6 +35,11 @@
 #define RISCV_CORE_CONFIG "rv32_i4k_d4k"
 #endif
 
+#ifndef ENDMARK_FUNCTION
+#include "endmark.h"
+#endif
+
+
 #include "jpeglib.h"
 
 
@@ -45,13 +50,13 @@
 void cjpeg_transupp_initSeed( void );
 signed char cjpeg_transupp_randomInteger( void );
 void cjpeg_transupp_init( void );
-int __attribute__((aligned(64))) __attribute__((optimize("O0"))) cjpeg_transupp_return( void );
+int cjpeg_transupp_return( void );
 void cjpeg_transupp_do_flip_v( j_compress_ptr );
 void cjpeg_transupp_do_rot_90( j_compress_ptr );
 void cjpeg_transupp_do_rot_180( j_compress_ptr );
 void cjpeg_transupp_do_rot_270( j_compress_ptr );
 void cjpeg_transupp_do_transverse( j_compress_ptr );
-void __attribute__((aligned(64))) cjpeg_transupp_main( void );
+void cjpeg_transupp_main( void );
 int main( void );
 
 
@@ -140,7 +145,7 @@ void cjpeg_transupp_init( void )
 }
 
 
-int __attribute__((aligned(64))) __attribute__((optimize("O0"))) cjpeg_transupp_return( void )
+int cjpeg_transupp_return( void )
 {
   int checksum = 0;
   unsigned int i;
@@ -685,7 +690,7 @@ void cjpeg_transupp_do_transverse( j_compress_ptr dstinfo )
   Main functions
 */
 
-void __attribute__((aligned(64))) _Pragma ( "entrypoint" ) cjpeg_transupp_main( void )
+void _Pragma ( "entrypoint" ) cjpeg_transupp_main( void )
 {
   cjpeg_transupp_dstinfo.image_width = 227;
   cjpeg_transupp_dstinfo.image_height = 149;
@@ -724,6 +729,9 @@ int main( void )
   cjpeg_transupp_main();
 #ifdef EXP_USE_MCYCLE
   asm volatile ("csrr %0, mcycle" : "=r" (cycles2));
+#endif
+#ifdef ENDMARK_FUNCTION
+  benchmark_endmark();
 #endif
   ret = cjpeg_transupp_return();
 

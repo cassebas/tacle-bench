@@ -163,6 +163,11 @@
 #define RISCV_CORE_CONFIG "rv32_i4k_d4k"
 #endif
 
+#ifndef ENDMARK_FUNCTION
+#include "endmark.h"
+#endif
+
+
 #include "anagram_ctype.h"
 #include "anagram_stdlib.h"
 #include "anagram_strings.h"
@@ -219,8 +224,8 @@ typedef anagram_Letter *anagram_PLetter;
 */
 
 void anagram_init( void );
-void __attribute__((aligned(64))) anagram_main( void );
-int __attribute__((aligned(64))) __attribute__((optimize("O0"))) anagram_return( void );
+void anagram_main( void );
+int anagram_return( void );
 int anagram_ch2i( int ch );
 void anagram_AddWords( void );
 void anagram_BuildMask( char const *pchPhrase );
@@ -346,7 +351,7 @@ void anagram_init( void )
 }
 
 
-int __attribute__((aligned(64))) __attribute__((optimize("O0"))) anagram_return( void )
+int anagram_return( void )
 {
   int i;
   char const *answer = "duke yip arm";
@@ -634,7 +639,7 @@ void anagram_SortCandidates( void )
 }
 
 
-void __attribute__((aligned(64))) _Pragma( "entrypoint" ) anagram_main( void )
+void _Pragma( "entrypoint" ) anagram_main( void )
 {
   int i;
 
@@ -673,6 +678,9 @@ int main( void )
   anagram_main();
 #ifdef EXP_USE_MCYCLE
   asm volatile ("csrr %0, mcycle" : "=r" (cycles2));
+#endif
+#ifdef ENDMARK_FUNCTION
+  benchmark_endmark();
 #endif
   ret = anagram_return();
 

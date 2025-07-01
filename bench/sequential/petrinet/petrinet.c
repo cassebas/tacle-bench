@@ -25,6 +25,11 @@
 #define RISCV_CORE_CONFIG "rv32_i4k_d4k"
 #endif
 
+#ifndef ENDMARK_FUNCTION
+#include "endmark.h"
+#endif
+
+
 /* Remove the following #define for actual WCET analyses! */
 /*
   #define PROFILING
@@ -45,8 +50,8 @@ int petrinet_main_iters_dummy_i = 0,
   Forward declaration of functions
 */
 void petrinet_init( void );
-int __attribute__((aligned(64))) __attribute__((optimize("O0"))) petrinet_return( void );
-void __attribute__((aligned(64))) petrinet_main( void );
+int petrinet_return( void );
+void petrinet_main( void );
 int main( void );
 
 
@@ -59,7 +64,7 @@ volatile long petrinet_P3_marking_member_0[ 6 ];
 
 const long petrinet_CHECKSUM = 0;
 
-void __attribute__((aligned(64))) _Pragma ( "entrypoint" ) petrinet_main( void )
+void _Pragma ( "entrypoint" ) petrinet_main( void )
 {
   int dummy_i;
   /*   dummy_i = 17; Takes too much time */
@@ -957,7 +962,7 @@ void petrinet_init( void )
 }
 
 
-int __attribute__((aligned(64))) __attribute__((optimize("O0"))) petrinet_return( void )
+int petrinet_return( void )
 {
   // TODO: use something from the Px_... arrays
   int checksum = 0;
@@ -992,6 +997,9 @@ int main( void )
   petrinet_main();
 #ifdef EXP_USE_MCYCLE
   asm volatile ("csrr %0, mcycle" : "=r" (cycles2));
+#endif
+#ifdef ENDMARK_FUNCTION
+  benchmark_endmark();
 #endif
   ret = petrinet_return();
 

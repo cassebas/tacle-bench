@@ -26,18 +26,29 @@ else
 	CFLAGS += -O2
 endif
 
+# Maybe use the special endmark function in the C-source
+ifneq ($(ENDMARK_FUNCTION),)
+	CFLAGS += -DENDMARK_FUNCTION
+	LFLAGS = -static -nostartfiles -T main_endmark.lds
+else
+	LFLAGS = -static -nostartfiles -T main.lds
+endif
+
 CCFLAGS = $(CFLAGS)
 CCFLAGS += -mcmodel=medany -Wall
 CCFLAGS += -fno-pic -fno-common
 
-LFLAGS = -static -nostartfiles -T main.lds
-
 BUILD_DIR = buildfiles
-TARGET = $(BUILD_DIR)/petrinet.elf
-DISASSEMBLY = $(BUILD_DIR)/petrinet-disassembly.txt
+
+BENCH = $(shell basename $(CURDIR))
+TARGET = $(BUILD_DIR)/$(BENCH).elf
+DISASSEMBLY = $(BUILD_DIR)/$(BENCH)-disassembly.txt
 
 SRC = $(CURDIR)
-OBJ = $(patsubst $(SRC)/%.c,$(BUILD_DIR)/%.o,$(wildcard $(SRC)/*.c))
+OBJ = buildfiles/$(BENCH).o buildfiles/kprintf.o
+ifneq ($(ENDMARK_FUNCTION),)
+OBJ += buildfiles/endmark.o
+endif
 
 all: $(BUILD_DIR) $(TARGET) $(DISASSEMBLY)
 

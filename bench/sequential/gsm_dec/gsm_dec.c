@@ -26,6 +26,11 @@
 #define RISCV_CORE_CONFIG "rv32_i4k_d4k"
 #endif
 
+#ifndef ENDMARK_FUNCTION
+#include "endmark.h"
+#endif
+
+
 #include "gsm.h"
 #include "add.h"
 #include "data.h"
@@ -115,7 +120,7 @@ void gsm_dec_Coefficients_27_39( word *LARpp_j_1, word *LARpp_j, word *LARp );
 
 gsm gsm_dec_create( void );
 void gsm_dec_init( void );
-void __attribute__((aligned(64))) gsm_dec_main( void );
+void gsm_dec_main( void );
 int main( void );
 
 /* add.c */
@@ -612,7 +617,7 @@ void gsm_dec_init( void )
   gsm_dec_state_ptr = gsm_dec_create();
 }
 
-int __attribute__((aligned(64))) __attribute__((optimize("O0"))) gsm_dec_return( void )
+int gsm_dec_return( void )
 {
   return gsm_dec_result;
 }
@@ -736,7 +741,7 @@ int gsm_dec_decode( gsm s, gsm_byte *c, gsm_signal *target )
   return 0;
 }
 
-void __attribute__((aligned(64))) _Pragma( "entrypoint" ) gsm_dec_main( void )
+void _Pragma( "entrypoint" ) gsm_dec_main( void )
 {
   gsm r;
   unsigned i;
@@ -768,6 +773,9 @@ int main( void )
   gsm_dec_main();
 #ifdef EXP_USE_MCYCLE
   asm volatile ("csrr %0, mcycle" : "=r" (cycles2));
+#endif
+#ifdef ENDMARK_FUNCTION
+  benchmark_endmark();
 #endif
   ret = gsm_dec_return();
 

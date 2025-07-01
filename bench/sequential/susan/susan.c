@@ -275,6 +275,11 @@
 #define RISCV_CORE_CONFIG "rv32_i4k_d4k"
 #endif
 
+#ifndef ENDMARK_FUNCTION
+#include "endmark.h"
+#endif
+
+
 #include "wcclibm.h"
 #include "wccfile.h"
 #include "wccmalloc.h"
@@ -2490,7 +2495,7 @@ void susan_init( void )
   // bt=50; /* Brightness threshold, all modes, (default=20) */
 }
 
-void __attribute__((aligned(64))) _Pragma( "entrypoint" ) susan_main( void )
+void _Pragma( "entrypoint" ) susan_main( void )
 {
   susan_call_susan( &susan_file, 0 );
   susan_wccfreeall();
@@ -2500,7 +2505,7 @@ void __attribute__((aligned(64))) _Pragma( "entrypoint" ) susan_main( void )
   susan_wccfreeall();
 }
 
-int __attribute__((aligned(64))) __attribute__((optimize("O0"))) susan_return( void )
+int susan_return( void )
 {
   return 0;
 }
@@ -2519,6 +2524,9 @@ int main( void )
   susan_main();
 #ifdef EXP_USE_MCYCLE
   asm volatile ("csrr %0, mcycle" : "=r" (cycles2));
+#endif
+#ifdef ENDMARK_FUNCTION
+  benchmark_endmark();
 #endif
   ret = susan_return();
 

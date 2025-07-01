@@ -41,6 +41,10 @@
 #define RISCV_CORE_CONFIG "rv32_i4k_d4k"
 #endif
 
+#ifndef ENDMARK_FUNCTION
+#include "endmark.h"
+#endif
+
 void adpcm_dec_decode( int );
 int adpcm_dec_filtez( int *bpl, int *dlt );
 void adpcm_dec_upzero( int dlt, int *dlti, int *bli );
@@ -58,8 +62,8 @@ int adpcm_dec_cos( int n );
 int adpcm_dec_sin( int n );
 
 void adpcm_dec_init();
-int __attribute__((aligned(64))) adpcm_dec_return();
-void __attribute__((aligned(64))) adpcm_dec_main();
+int adpcm_dec_return();
+void adpcm_dec_main();
 int main( void );
 
 
@@ -678,7 +682,7 @@ void adpcm_dec_init()
   }
 }
 
-int __attribute__((aligned(64))) __attribute__((optimize("O0"))) adpcm_dec_return()
+int adpcm_dec_return()
 {
   int i;
   int check_sum = 0;
@@ -693,7 +697,7 @@ int __attribute__((aligned(64))) __attribute__((optimize("O0"))) adpcm_dec_retur
   Main functions
 */
 
-void __attribute__((aligned(64))) _Pragma( "entrypoint" ) adpcm_dec_main( void )
+void adpcm_dec_main( void )
 {
   int i;
 
@@ -721,6 +725,9 @@ int main( void )
   adpcm_dec_main();
 #ifdef EXP_USE_MCYCLE
   asm volatile ("csrr %0, mcycle" : "=r" (cycles2));
+#endif
+#ifdef ENDMARK_FUNCTION
+  benchmark_endmark();
 #endif
   ret = adpcm_dec_return();
 

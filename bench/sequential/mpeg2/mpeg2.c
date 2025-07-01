@@ -50,6 +50,11 @@
 #define RISCV_CORE_CONFIG "rv32_i4k_d4k"
 #endif
 
+#ifndef ENDMARK_FUNCTION
+#include "endmark.h"
+#endif
+
+
 /*
   Forward declaration of data types
 */
@@ -62,7 +67,7 @@ struct mbinfo;
 */
 
 void mpeg2_init( void );
-int __attribute__((aligned(64))) __attribute__((optimize("O0"))) mpeg2_return( void );
+int mpeg2_return( void );
 void mpeg2_motion_estimation( unsigned char *, unsigned char *, unsigned char *,
                               unsigned char *, unsigned char *, unsigned char *,
                               int, int, int, int, struct mbinfo *, int, int );
@@ -94,7 +99,7 @@ int mpeg2_bdist1( unsigned char *, unsigned char *, unsigned char *, int, int,
 int mpeg2_bdist2( unsigned char *, unsigned char *, unsigned char *, int, int,
                   int, int, int, int );
 int mpeg2_variance( unsigned char *, int );
-void __attribute__((aligned(64))) mpeg2_main( void );
+void mpeg2_main( void );
 int main( void );
 
 
@@ -11415,7 +11420,7 @@ void mpeg2_init( void )
 }
 
 
-int __attribute__((aligned(64))) __attribute__((optimize("O0"))) mpeg2_return( void )
+int mpeg2_return( void )
 {
   int checksum = 0;
   int i, j, k, l;
@@ -13200,7 +13205,7 @@ int mpeg2_variance( unsigned char *p, int lx )
   Main functions
 */
 
-void __attribute__((aligned(64))) _Pragma ( "entrypoint" ) mpeg2_main( void )
+void _Pragma ( "entrypoint" ) mpeg2_main( void )
 {
   mpeg2_motion_estimation(
     mpeg2_oldorgframe, mpeg2_oldorgframe, mpeg2_oldorgframe, mpeg2_oldorgframe,
@@ -13222,6 +13227,9 @@ int main( void )
   mpeg2_main();
 #ifdef EXP_USE_MCYCLE
   asm volatile ("csrr %0, mcycle" : "=r" (cycles2));
+#endif
+#ifdef ENDMARK_FUNCTION
+  benchmark_endmark();
 #endif
   ret = mpeg2_return();
 

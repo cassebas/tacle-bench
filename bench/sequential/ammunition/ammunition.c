@@ -30,6 +30,11 @@
 #define RISCV_CORE_CONFIG "rv32_i4k_d4k"
 #endif
 
+#ifndef ENDMARK_FUNCTION
+#include "endmark.h"
+#endif
+
+
 #include "bits.h"
 #include "arithm.h"
 #include "ammunition_stdlib.h"
@@ -46,8 +51,8 @@ void ammunition_reset_str_arithm( char *str, char *s, char *d, char *e,
 int ammunition_bits_test();
 int ammunition_arithm_test();
 void ammunition_init( void );
-int __attribute__((aligned(64))) __attribute__((optimize("O0"))) ammunition_return( void );
-void __attribute__((aligned(64))) ammunition_main( void );
+int ammunition_return( void );
+void ammunition_main( void );
 int main( void );
 
 
@@ -1160,7 +1165,7 @@ void ammunition_init( void )
   ammunition_result = 0;
 }
 
-int __attribute__((aligned(64))) __attribute__((optimize("O0"))) ammunition_return( void )
+int ammunition_return( void )
 {
   return ammunition_result;
 }
@@ -1169,7 +1174,7 @@ int __attribute__((aligned(64))) __attribute__((optimize("O0"))) ammunition_retu
   Main functions
 */
 
-void __attribute__((aligned(64))) _Pragma( "entrypoint" ) ammunition_main( void )
+void _Pragma( "entrypoint" ) ammunition_main( void )
 {
   ammunition_result |= ammunition_bits_test();
   ammunition_result |= ammunition_arithm_test();
@@ -1190,6 +1195,9 @@ int main( void )
   ammunition_main();
 #ifdef EXP_USE_MCYCLE
   asm volatile ("csrr %0, mcycle" : "=r" (cycles2));
+#endif
+#ifdef ENDMARK_FUNCTION
+  benchmark_endmark();
 #endif
   ret = ammunition_return();
 

@@ -29,6 +29,11 @@
 #define RISCV_CORE_CONFIG "rv32_i4k_d4k"
 #endif
 
+#ifndef ENDMARK_FUNCTION
+#include "endmark.h"
+#endif
+
+
 #include "audiobeamlibm.h"
 #include "audiobeamlibmalloc.h"
 #include "audiobeam.h"
@@ -38,8 +43,8 @@
 */
 
 void audiobeam_init();
-int __attribute__((aligned(64))) __attribute__((optimize("O0"))) audiobeam_return();
-void __attribute__((aligned(64))) audiobeam_main( void );
+int audiobeam_return();
+void audiobeam_main( void );
 int main( void );
 void audiobeam_preprocess_delays( struct audiobeam_PreprocessedDelays
                                   prep_delays[  ], float *delays );
@@ -135,7 +140,7 @@ void audiobeam_init()
 }
 
 
-int __attribute__((aligned(64))) __attribute__((optimize("O0"))) audiobeam_return()
+int audiobeam_return()
 {
   return ( audiobeam_checksum + 1 != 0 );
 }
@@ -572,7 +577,7 @@ void audiobeam_calc_single_pos( float source_location[ 3 ],
   Main functions
 */
 
-void __attribute__((aligned(64))) _Pragma( "entrypoint" ) audiobeam_main( void )
+void _Pragma( "entrypoint" ) audiobeam_main( void )
 {
   char hamming = 1;
   audiobeam_calc_single_pos( audiobeam_source_location,
@@ -595,6 +600,9 @@ int main( void )
   audiobeam_main();
 #ifdef EXP_USE_MCYCLE
   asm volatile ("csrr %0, mcycle" : "=r" (cycles2));
+#endif
+#ifdef ENDMARK_FUNCTION
+  benchmark_endmark();
 #endif
   ret = audiobeam_return();
 

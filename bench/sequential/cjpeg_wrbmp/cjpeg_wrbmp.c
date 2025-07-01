@@ -30,6 +30,11 @@
 #define RISCV_CORE_CONFIG "rv32_i4k_d4k"
 #endif
 
+#ifndef ENDMARK_FUNCTION
+#include "endmark.h"
+#endif
+
+
 #include "cdjpeg.h"
 
 #ifdef CJPEG_WRBMP_BMP_SUPPORTED
@@ -75,9 +80,9 @@ void cjpeg_wrbmp_write_colormap( cjpeg_wrbmp_j_decompress_ptr
                                  int cMap );
 int cjpeg_wrbmp_putc_modified( int character );
 void cjpeg_wrbmp_init();
-void __attribute__((aligned(64))) cjpeg_wrbmp_main();
-int __attribute__((aligned(64))) __attribute__((optimize("O0"))) cjpeg_wrbmp_return();
-int __attribute__((aligned(64))) main();
+void cjpeg_wrbmp_main();
+int cjpeg_wrbmp_return();
+int main();
 
 /*
    Initialization functions
@@ -199,7 +204,7 @@ void cjpeg_wrbmp_write_colormap( cjpeg_wrbmp_j_decompress_ptr
   }
 }
 
-void __attribute__((aligned(64))) _Pragma( "entrypoint" ) cjpeg_wrbmp_main()
+void _Pragma( "entrypoint" ) cjpeg_wrbmp_main()
 {
   cjpeg_wrbmp_finish_output_bmp( &cjpeg_wrbmp_jpeg_dec_1 );
   cjpeg_wrbmp_write_colormap(    &cjpeg_wrbmp_jpeg_dec_1, 768, 4, 1 );
@@ -208,12 +213,12 @@ void __attribute__((aligned(64))) _Pragma( "entrypoint" ) cjpeg_wrbmp_main()
   cjpeg_wrbmp_write_colormap(    &cjpeg_wrbmp_jpeg_dec_2, 768, 4, 1 );
 }
 
-int __attribute__((aligned(64))) __attribute__((optimize("O0"))) cjpeg_wrbmp_return()
+int cjpeg_wrbmp_return()
 {
   return ( cjpeg_wrbmp_checksum  + ( -209330 ) ) != 0;
 }
 
-int __attribute__((aligned(64))) main( void )
+int main( void )
 {
 #ifdef EXP_USE_MCYCLE
   uintptr_t cycles1, cycles2;
@@ -227,6 +232,9 @@ int __attribute__((aligned(64))) main( void )
   cjpeg_wrbmp_main();
 #ifdef EXP_USE_MCYCLE
   asm volatile ("csrr %0, mcycle" : "=r" (cycles2));
+#endif
+#ifdef ENDMARK_FUNCTION
+  benchmark_endmark();
 #endif
   ret = cjpeg_wrbmp_return();
 

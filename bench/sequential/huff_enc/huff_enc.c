@@ -50,6 +50,11 @@
 #define RISCV_CORE_CONFIG "rv32_i4k_d4k"
 #endif
 
+#ifndef ENDMARK_FUNCTION
+#include "endmark.h"
+#endif
+
+
 /*
   Declaration of types
 */
@@ -72,7 +77,7 @@ typedef struct {
 */
 
 void huff_enc_init( void );
-int __attribute__((aligned(64))) __attribute__((optimize("O0"))) huff_enc_return( void );
+int huff_enc_return( void );
 void huff_enc_beginning_of_data();
 int huff_enc_end_of_data();
 int huff_enc_read_byte();
@@ -89,7 +94,7 @@ void huff_enc_encode_codes_table( huff_enc_t_tree *tree,
                                   huff_enc_t_bin_val codes_table[ 257 ], huff_enc_t_bin_val *code_val );
 void huff_enc_create_codes_table( huff_enc_t_tree *tree,
                                   huff_enc_t_bin_val codes_table[ 257 ] );
-void __attribute__((aligned(64))) huff_enc_main();
+void huff_enc_main();
 int main( void );
 
 
@@ -158,7 +163,7 @@ void huff_enc_init( void )
 }
 
 
-int __attribute__((aligned(64))) __attribute__((optimize("O0"))) huff_enc_return( void )
+int huff_enc_return( void )
 {
   int i;
   _Pragma( "loopbound min 419 max 419" )
@@ -552,7 +557,7 @@ void huff_enc_create_codes_table( huff_enc_t_tree *tree,
 }
 
 
-void __attribute__((aligned(64))) _Pragma( "entrypoint" ) huff_enc_main()
+void _Pragma( "entrypoint" ) huff_enc_main()
 /* Returned parameters: None
    Action: Compresses with Huffman method all bytes read by the function
            'huff_enc_read_byte'
@@ -600,6 +605,9 @@ int main( void )
   huff_enc_main();
 #ifdef EXP_USE_MCYCLE
   asm volatile ("csrr %0, mcycle" : "=r" (cycles2));
+#endif
+#ifdef ENDMARK_FUNCTION
+  benchmark_endmark();
 #endif
   ret = huff_enc_return();
 

@@ -39,7 +39,10 @@
 #ifndef RISCV_CORE_CONFIG
 #define RISCV_CORE_CONFIG "rv32_i4k_d4k"
 #endif
+
+#ifndef ENDMARK_FUNCTION
 #include "endmark.h"
+#endif
 
 
 #include "epic.h"
@@ -1149,7 +1152,9 @@ int main( void )
 #ifdef EXP_USE_MCYCLE
   asm volatile ("csrr %0, mcycle" : "=r" (cycles2));
 #endif
-  epic_endmark();
+#ifdef ENDMARK_FUNCTION
+  benchmark_endmark();
+#endif
   ret = epic_return();
 
   kprintf("riscv_core_config %s benchmark %s ",

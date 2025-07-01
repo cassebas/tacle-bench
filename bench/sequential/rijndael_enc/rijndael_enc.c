@@ -44,6 +44,11 @@
 #define RISCV_CORE_CONFIG "rv32_i4k_d4k"
 #endif
 
+#ifndef ENDMARK_FUNCTION
+#include "endmark.h"
+#endif
+
+
 #include "aes.h"
 #include "rijndael_enc_libc.h"
 
@@ -62,10 +67,10 @@ int rijndael_enc_checksum = 0;
   Forward declaration of functions
 */
 void rijndael_enc_init( void );
-int __attribute__((aligned(64))) __attribute__((optimize("O0"))) rijndael_enc_return( void );
+int rijndael_enc_return( void );
 void rijndael_enc_fillrand( unsigned char *buf, int len );
 void rijndael_enc_encfile( struct rijndael_enc_FILE *fin, struct aes *ctx );
-void __attribute__((aligned(64))) rijndael_enc_main( void );
+void rijndael_enc_main( void );
 
 void rijndael_enc_init( void )
 {
@@ -119,7 +124,7 @@ void rijndael_enc_init( void )
   rijndael_enc_key_len = i / 2;
 }
 
-int __attribute__((aligned(64))) __attribute__((optimize("O0"))) rijndael_enc_return( void )
+int rijndael_enc_return( void )
 {
   return ( ( rijndael_enc_checksum == ( int )249509 ) ? 0 : -1 );
 }
@@ -219,7 +224,7 @@ void rijndael_enc_encfile( struct rijndael_enc_FILE *fin, struct aes *ctx )
   }
 }
 
-void __attribute__((aligned(64))) _Pragma( "entrypoint" ) rijndael_enc_main( void )
+void _Pragma( "entrypoint" ) rijndael_enc_main( void )
 {
   struct aes ctx[ 1 ];
 
@@ -242,6 +247,9 @@ int main( void )
   rijndael_enc_main();
 #ifdef EXP_USE_MCYCLE
   asm volatile ("csrr %0, mcycle" : "=r" (cycles2));
+#endif
+#ifdef ENDMARK_FUNCTION
+  benchmark_endmark();
 #endif
   ret = rijndael_enc_return();
 

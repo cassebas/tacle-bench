@@ -10,6 +10,11 @@
 #define RISCV_CORE_CONFIG "rv32_i4k_d4k"
 #endif
 
+#ifndef ENDMARK_FUNCTION
+#include "endmark.h"
+#endif
+
+
 #include "wcclibm.h"
 #ifndef M_PI
 #define M_PI        3.1415926535897932384626433832795
@@ -65,14 +70,14 @@ void fmref_run_demod( FloatBuffer *fbin, FloatBuffer *fbout );
 void fmref_init_equalizer( EqualizerData *data );
 void fmref_run_equalizer( FloatBuffer *fbin, FloatBuffer *fbout,
                           EqualizerData *data );
-void __attribute__((aligned(64))) fmref_main( void );
+void fmref_main( void );
 
 void fmref_init( void )
 {
   // dummy init function
 }
 
-int __attribute__((aligned(64))) __attribute__((optimize("O0"))) fmref_return( void )
+int fmref_return( void )
 {
   // dummy return value
   return 0;
@@ -93,6 +98,9 @@ int main( void )
 #ifdef EXP_USE_MCYCLE
   asm volatile ("csrr %0, mcycle" : "=r" (cycles2));
 #endif
+#ifdef ENDMARK_FUNCTION
+  benchmark_endmark();
+#endif
   ret = fmref_return();
 
   kprintf("riscv_core_config %s benchmark %s ",
@@ -109,7 +117,7 @@ int main( void )
 FloatBuffer fmref_fb1, fmref_fb2, fmref_fb3, fmref_fb4;
 LPFData fmref_lpf_data;
 
-void __attribute__((aligned(64))) _Pragma( "entrypoint" ) fmref_main( void )
+void _Pragma( "entrypoint" ) fmref_main( void )
 {
   int i;
   EqualizerData eq_data;
