@@ -36,11 +36,6 @@
 #endif
 
 
-#include "input.h"
-
-/*
-  Definitions of symbolic co
-
 #include "h264_dec.h"
 
 
