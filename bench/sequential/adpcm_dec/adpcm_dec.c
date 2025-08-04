@@ -62,8 +62,13 @@ int adpcm_dec_cos( int n );
 int adpcm_dec_sin( int n );
 
 void adpcm_dec_init();
+#ifdef PARTLY_FALIGN_FUNCTIONS
+int __attribute__((aligned(64))) adpcm_dec_return();
+void __attribute__((aligned(64))) adpcm_dec_main();
+#else
 int adpcm_dec_return();
 void adpcm_dec_main();
+#endif
 int main( void );
 
 
@@ -682,7 +687,11 @@ void adpcm_dec_init()
   }
 }
 
+#ifdef PARTLY_FALIGN_FUNCTIONS
+int __attribute__((aligned(64))) adpcm_dec_return()
+#else
 int adpcm_dec_return()
+#endif
 {
   int i;
   int check_sum = 0;
@@ -697,7 +706,11 @@ int adpcm_dec_return()
   Main functions
 */
 
+#ifdef PARTLY_FALIGN_FUNCTIONS
+void __attribute__((aligned(64))) adpcm_dec_main()
+#else
 void adpcm_dec_main( void )
+#endif
 {
   int i;
 
