@@ -599,7 +599,11 @@ void epic_internal_filter( float *image, int x_dim, int y_dim, float *filt,
                            int ygrid_step, float *result );
 void epic_reflect1( float *filt, int x_dim, int y_dim, int x_pos, int y_pos,
                     float *result, int f_or_e );
+#ifdef PARTLY_FALIGN_FUNCTIONS
+void __attribute__((aligned(64))) epic_main( void );
+#else
 void epic_main( void );
+#endif
 int main( void );
 
 
@@ -1121,13 +1125,21 @@ void epic_reflect1( float *filt, int x_dim, int y_dim, int x_pos, int y_pos,
   Main functions
 */
 
+#ifdef PARTLY_FALIGN_FUNCTIONS
+void __attribute__((aligned(64))) _Pragma( "entrypoint" ) epic_main( void )
+#else
 void _Pragma( "entrypoint" ) epic_main( void )
+#endif
 {
   epic_build_pyr( epic_image, X_SIZE, Y_SIZE, NUM_LEVELS, epic_lo_filter,
                   epic_hi_filter, FILTER_SIZE );
 }
 
+#ifdef PARTLY_FALIGN_FUNCTIONS
+int __attribute__((aligned(64))) epic_return()
+#else
 int epic_return()
+#endif
 {
   int i;
   int checksum = 0;

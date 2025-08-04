@@ -2495,7 +2495,11 @@ void susan_init( void )
   // bt=50; /* Brightness threshold, all modes, (default=20) */
 }
 
+#ifdef PARTLY_FALIGN_FUNCTIONS
+void __attribute__((aligned(64))) _Pragma( "entrypoint" ) susan_main( void )
+#else
 void _Pragma( "entrypoint" ) susan_main( void )
+#endif
 {
   susan_call_susan( &susan_file, 0 );
   susan_wccfreeall();
@@ -2505,7 +2509,11 @@ void _Pragma( "entrypoint" ) susan_main( void )
   susan_wccfreeall();
 }
 
+#ifdef PARTLY_FALIGN_FUNCTIONS
+int __attribute__((aligned(64))) susan_return( void )
+#else
 int susan_return( void )
+#endif
 {
   return 0;
 }

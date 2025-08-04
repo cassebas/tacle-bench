@@ -120,7 +120,11 @@ void gsm_dec_Coefficients_27_39( word *LARpp_j_1, word *LARpp_j, word *LARp );
 
 gsm gsm_dec_create( void );
 void gsm_dec_init( void );
+#ifdef PARTLY_FALIGN_FUNCTIONS
+void __attribute__((aligned(64))) gsm_dec_main( void );
+#else
 void gsm_dec_main( void );
+#endif
 int main( void );
 
 /* add.c */
@@ -617,7 +621,11 @@ void gsm_dec_init( void )
   gsm_dec_state_ptr = gsm_dec_create();
 }
 
+#ifdef PARTLY_FALIGN_FUNCTIONS
+int __attribute__((aligned(64))) gsm_dec_return( void )
+#else
 int gsm_dec_return( void )
+#endif
 {
   return gsm_dec_result;
 }
@@ -741,7 +749,11 @@ int gsm_dec_decode( gsm s, gsm_byte *c, gsm_signal *target )
   return 0;
 }
 
+#ifdef PARTLY_FALIGN_FUNCTIONS
+void __attribute__((aligned(64))) _Pragma( "entrypoint" ) gsm_dec_main( void )
+#else
 void _Pragma( "entrypoint" ) gsm_dec_main( void )
+#endif
 {
   gsm r;
   unsigned i;

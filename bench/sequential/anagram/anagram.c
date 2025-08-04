@@ -224,8 +224,13 @@ typedef anagram_Letter *anagram_PLetter;
 */
 
 void anagram_init( void );
+#ifdef PARTLY_FALIGN_FUNCTIONS
+void __attribute__((aligned(64))) anagram_main( void );
+int __attribute__((aligned(64))) anagram_return( void );
+#else
 void anagram_main( void );
 int anagram_return( void );
+#endif
 int anagram_ch2i( int ch );
 void anagram_AddWords( void );
 void anagram_BuildMask( char const *pchPhrase );
@@ -351,7 +356,11 @@ void anagram_init( void )
 }
 
 
+#ifdef PARTLY_FALIGN_FUNCTIONS
+int __attribute__((aligned(64))) anagram_return( void )
+#else
 int anagram_return( void )
+#endif
 {
   int i;
   char const *answer = "duke yip arm";
@@ -639,7 +648,11 @@ void anagram_SortCandidates( void )
 }
 
 
+#ifdef PARTLY_FALIGN_FUNCTIONS
+void __attribute__((aligned(64))) _Pragma( "entrypoint" ) anagram_main( void )
+#else
 void _Pragma( "entrypoint" ) anagram_main( void )
+#endif
 {
   int i;
 

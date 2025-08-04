@@ -77,7 +77,11 @@ typedef struct {
 */
 
 void huff_enc_init( void );
+#ifdef PARTLY_FALIGN_FUNCTIONS
+int __attribute__((aligned(64))) huff_enc_return( void );
+#else
 int huff_enc_return( void );
+#endif
 void huff_enc_beginning_of_data();
 int huff_enc_end_of_data();
 int huff_enc_read_byte();
@@ -94,7 +98,11 @@ void huff_enc_encode_codes_table( huff_enc_t_tree *tree,
                                   huff_enc_t_bin_val codes_table[ 257 ], huff_enc_t_bin_val *code_val );
 void huff_enc_create_codes_table( huff_enc_t_tree *tree,
                                   huff_enc_t_bin_val codes_table[ 257 ] );
+#ifdef PARTLY_FALIGN_FUNCTIONS
+void __attribute__((aligned(64))) huff_enc_main();
+#else
 void huff_enc_main();
+#endif
 int main( void );
 
 
@@ -163,7 +171,11 @@ void huff_enc_init( void )
 }
 
 
+#ifdef PARTLY_FALIGN_FUNCTIONS
+int __attribute__((aligned(64))) huff_enc_return( void )
+#else
 int huff_enc_return( void )
+#endif
 {
   int i;
   _Pragma( "loopbound min 419 max 419" )
@@ -557,7 +569,11 @@ void huff_enc_create_codes_table( huff_enc_t_tree *tree,
 }
 
 
+#ifdef PARTLY_FALIGN_FUNCTIONS
+void __attribute__((aligned(64))) _Pragma( "entrypoint" ) huff_enc_main()
+#else
 void _Pragma( "entrypoint" ) huff_enc_main()
+#endif
 /* Returned parameters: None
    Action: Compresses with Huffman method all bytes read by the function
            'huff_enc_read_byte'

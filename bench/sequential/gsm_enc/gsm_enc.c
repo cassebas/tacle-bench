@@ -2207,12 +2207,20 @@ void gsm_enc_init( void )
   gsm_enc_state_ptr = gsm_enc_create();
 }
 
+#ifdef PARTLY_FALIGN_FUNCTIONS
+int __attribute__((aligned(64))) gsm_enc_return( void )
+#else
 int gsm_enc_return( void )
+#endif
 {
   return gsm_enc_result;
 }
 
+#ifdef PARTLY_FALIGN_FUNCTIONS
+void __attribute__((aligned(64))) _Pragma( "entrypoint" ) gsm_enc_main( void )
+#else
 void _Pragma( "entrypoint" ) gsm_enc_main( void )
+#endif
 {
   gsm r;
   unsigned i;

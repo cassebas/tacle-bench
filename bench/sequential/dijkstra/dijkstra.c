@@ -68,12 +68,20 @@ int dijkstra_checksum = 0;
   Forward declaration of functions
 */
 void dijkstra_init( void );
+#ifdef PARTLY_FALIGN_FUNCTIONS
+int __attribute__((aligned(64))) dijkstra_return( void );
+#else
 int dijkstra_return( void );
+#endif
 int dijkstra_enqueue( int node, int dist, int prev );
 void dijkstra_dequeue( int *node, int *dist, int *prev );
 int dijkstra_qcount( void );
 int dijkstra_find( int chStart, int chEnd );
+#ifdef PARTLY_FALIGN_FUNCTIONS
+void __attribute__((aligned(64))) dijkstra_main( void );
+#else
 void dijkstra_main( void );
+#endif
 int main( void );
 
 void dijkstra_init( void )
@@ -94,7 +102,11 @@ void dijkstra_init( void )
   dijkstra_checksum = 0;
 }
 
+#ifdef PARTLY_FALIGN_FUNCTIONS
+int __attribute__((aligned(64))) dijkstra_return( void )
+#else
 int dijkstra_return( void )
+#endif
 {
   return ( ( dijkstra_checksum == 25 ) ? 0 : -1 );
 }
@@ -182,7 +194,11 @@ int dijkstra_find( int chStart, int chEnd )
   return 0;
 }
 
+#ifdef PARTLY_FALIGN_FUNCTIONS
+void __attribute__((aligned(64))) _Pragma( "entrypoint" ) dijkstra_main( void )
+#else
 void _Pragma( "entrypoint" ) dijkstra_main( void )
+#endif
 {
   int i, j;
 

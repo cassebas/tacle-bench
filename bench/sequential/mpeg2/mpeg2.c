@@ -67,7 +67,11 @@ struct mbinfo;
 */
 
 void mpeg2_init( void );
+#ifdef PARTLY_FALIGN_FUNCTIONS
+int __attribute__((aligned(64))) mpeg2_return( void );
+#else
 int mpeg2_return( void );
+#endif
 void mpeg2_motion_estimation( unsigned char *, unsigned char *, unsigned char *,
                               unsigned char *, unsigned char *, unsigned char *,
                               int, int, int, int, struct mbinfo *, int, int );
@@ -99,7 +103,11 @@ int mpeg2_bdist1( unsigned char *, unsigned char *, unsigned char *, int, int,
 int mpeg2_bdist2( unsigned char *, unsigned char *, unsigned char *, int, int,
                   int, int, int, int );
 int mpeg2_variance( unsigned char *, int );
+#ifdef PARTLY_FALIGN_FUNCTIONS
+void __attribute__((aligned(64))) mpeg2_main( void );
+#else
 void mpeg2_main( void );
+#endif
 int main( void );
 
 
@@ -11420,7 +11428,11 @@ void mpeg2_init( void )
 }
 
 
+#ifdef PARTLY_FALIGN_FUNCTIONS
+int __attribute__((aligned(64))) mpeg2_return( void )
+#else
 int mpeg2_return( void )
+#endif
 {
   int checksum = 0;
   int i, j, k, l;
@@ -13205,7 +13217,11 @@ int mpeg2_variance( unsigned char *p, int lx )
   Main functions
 */
 
+#ifdef PARTLY_FALIGN_FUNCTIONS
+void __attribute__((aligned(64))) _Pragma ( "entrypoint" ) mpeg2_main( void )
+#else
 void _Pragma ( "entrypoint" ) mpeg2_main( void )
+#endif
 {
   mpeg2_motion_estimation(
     mpeg2_oldorgframe, mpeg2_oldorgframe, mpeg2_oldorgframe, mpeg2_oldorgframe,

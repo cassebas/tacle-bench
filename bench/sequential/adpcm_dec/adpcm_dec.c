@@ -707,7 +707,7 @@ int adpcm_dec_return()
 */
 
 #ifdef PARTLY_FALIGN_FUNCTIONS
-void __attribute__((aligned(64))) adpcm_dec_main()
+void __attribute__((aligned(64))) adpcm_dec_main( void )
 #else
 void adpcm_dec_main( void )
 #endif

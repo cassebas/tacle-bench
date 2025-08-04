@@ -70,14 +70,22 @@ void fmref_run_demod( FloatBuffer *fbin, FloatBuffer *fbout );
 void fmref_init_equalizer( EqualizerData *data );
 void fmref_run_equalizer( FloatBuffer *fbin, FloatBuffer *fbout,
                           EqualizerData *data );
+#ifdef PARTLY_FALIGN_FUNCTIONS
+void __attribute__((aligned(64))) fmref_main( void );
+#else
 void fmref_main( void );
+#endif
 
 void fmref_init( void )
 {
   // dummy init function
 }
 
+#ifdef PARTLY_FALIGN_FUNCTIONS
+int __attribute__((aligned(64))) fmref_return( void )
+#else
 int fmref_return( void )
+#endif
 {
   // dummy return value
   return 0;
@@ -117,7 +125,11 @@ int main( void )
 FloatBuffer fmref_fb1, fmref_fb2, fmref_fb3, fmref_fb4;
 LPFData fmref_lpf_data;
 
+#ifdef PARTLY_FALIGN_FUNCTIONS
+void __attribute__((aligned(64))) _Pragma( "entrypoint" ) fmref_main( void )
+#else
 void _Pragma( "entrypoint" ) fmref_main( void )
+#endif
 {
   int i;
   EqualizerData eq_data;

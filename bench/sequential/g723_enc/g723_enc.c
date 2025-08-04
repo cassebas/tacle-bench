@@ -114,8 +114,13 @@ int g723_enc_pack_output(
   int     bits );
 
 void g723_enc_init();
+#ifdef PARTLY_FALIGN_FUNCTIONS
+int __attribute__((aligned(64))) g723_enc_return();
+void __attribute__((aligned(64))) g723_enc_main();
+#else
 int g723_enc_return();
 void g723_enc_main();
+#endif
 int main( void );
 
 /*
@@ -833,7 +838,11 @@ void g723_enc_init()
 }
 
 
+#ifdef PARTLY_FALIGN_FUNCTIONS
+int __attribute__((aligned(64))) g723_enc_return()
+#else
 int g723_enc_return()
+#endif
 {
   int i;
   int check_sum = 0;
@@ -849,7 +858,11 @@ int g723_enc_return()
   Main functions
 */
 
+#ifdef PARTLY_FALIGN_FUNCTIONS
+void __attribute__((aligned(64))) _Pragma( "entrypoint" ) g723_enc_main()
+#else
 void _Pragma( "entrypoint" ) g723_enc_main()
+#endif
 {
 //  struct g72x_state state;
   short   sample_short; //mv

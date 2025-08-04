@@ -50,8 +50,13 @@ int petrinet_main_iters_dummy_i = 0,
   Forward declaration of functions
 */
 void petrinet_init( void );
+#ifdef PARTLY_FALIGN_FUNCTIONS
+int __attribute__((aligned(64))) petrinet_return( void );
+void __attribute__((aligned(64))) petrinet_main( void );
+#else
 int petrinet_return( void );
 void petrinet_main( void );
+#endif
 int main( void );
 
 
@@ -64,7 +69,11 @@ volatile long petrinet_P3_marking_member_0[ 6 ];
 
 const long petrinet_CHECKSUM = 0;
 
+#ifdef PARTLY_FALIGN_FUNCTIONS
+void __attribute__((aligned(64))) _Pragma ( "entrypoint" ) petrinet_main( void )
+#else
 void _Pragma ( "entrypoint" ) petrinet_main( void )
+#endif
 {
   int dummy_i;
   /*   dummy_i = 17; Takes too much time */
@@ -962,7 +971,11 @@ void petrinet_init( void )
 }
 
 
+#ifdef PARTLY_FALIGN_FUNCTIONS
+int __attribute__((aligned(64))) petrinet_return( void )
+#else
 int petrinet_return( void )
+#endif
 {
   // TODO: use something from the Px_... arrays
   int checksum = 0;

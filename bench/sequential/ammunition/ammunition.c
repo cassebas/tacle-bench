@@ -51,8 +51,13 @@ void ammunition_reset_str_arithm( char *str, char *s, char *d, char *e,
 int ammunition_bits_test();
 int ammunition_arithm_test();
 void ammunition_init( void );
+#ifdef PARTLY_FALIGN_FUNCTIONS
+int __attribute__((aligned(64))) ammunition_return( void );
+void __attribute__((aligned(64))) ammunition_main( void );
+#else
 int ammunition_return( void );
 void ammunition_main( void );
+#endif
 int main( void );
 
 
@@ -1165,7 +1170,11 @@ void ammunition_init( void )
   ammunition_result = 0;
 }
 
+#ifdef PARTLY_FALIGN_FUNCTIONS
+int __attribute__((aligned(64))) ammunition_return( void )
+#else
 int ammunition_return( void )
+#endif
 {
   return ammunition_result;
 }
@@ -1174,7 +1183,11 @@ int ammunition_return( void )
   Main functions
 */
 
+#ifdef PARTLY_FALIGN_FUNCTIONS
+void __attribute__((aligned(64))) _Pragma( "entrypoint" ) ammunition_main( void )
+#else
 void _Pragma( "entrypoint" ) ammunition_main( void )
+#endif
 {
   ammunition_result |= ammunition_bits_test();
   ammunition_result |= ammunition_arithm_test();

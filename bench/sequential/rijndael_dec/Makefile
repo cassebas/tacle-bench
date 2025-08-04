@@ -14,6 +14,11 @@ ifneq ($(FALIGN_FUNCTIONS),)
 	CFLAGS += -falign-functions=64
 endif
 
+# Maybe align some functions to their next 64-byte boundaries?
+ifneq ($(PARTLY_FALIGN_FUNCTIONS),)
+	CFLAGS += -DPARTLY_FALIGN_FUNCTIONS
+endif
+
 # Maybe enable measurements with the mcyle instruction
 ifneq ($(EXP_USE_MCYCLE),)
 	CFLAGS += -DEXP_USE_MCYCLE

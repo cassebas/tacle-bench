@@ -67,10 +67,18 @@ int rijndael_dec_checksum = 0;
   Forward declaration of functions
 */
 void rijndael_dec_init( void );
+#ifdef PARTLY_FALIGN_FUNCTIONS
+int __attribute__((aligned(64))) rijndael_dec_return( void );
+#else
 int rijndael_dec_return( void );
+#endif
 void rijndael_dec_fillrand( unsigned char *buf, int len );
 void rijndael_dec_decfile( struct rijndael_dec_FILE *fin, struct aes *ctx );
+#ifdef PARTLY_FALIGN_FUNCTIONS
+void __attribute__((aligned(64))) rijndael_dec_main( void );
+#else
 void rijndael_dec_main( void );
+#endif
 
 void rijndael_dec_init( void )
 {
@@ -124,7 +132,11 @@ void rijndael_dec_init( void )
   rijndael_dec_key_len = i / 2;
 }
 
+#ifdef PARTLY_FALIGN_FUNCTIONS
+int __attribute__((aligned(64))) rijndael_dec_return( void )
+#else
 int rijndael_dec_return( void )
+#endif
 {
   return ( ( rijndael_dec_checksum == ( int )262180 ) ? 0 : -1 );
 }
@@ -181,7 +193,11 @@ void rijndael_dec_decfile( struct rijndael_dec_FILE *fin, struct aes *ctx )
   }
 }
 
+#ifdef PARTLY_FALIGN_FUNCTIONS
+void __attribute__((aligned(64))) _Pragma( "entrypoint" ) rijndael_dec_main( void )
+#else
 void _Pragma( "entrypoint" ) rijndael_dec_main( void )
+#endif
 {
   struct aes ctx[ 1 ];
 
