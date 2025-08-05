@@ -73,7 +73,11 @@ int __attribute__((aligned(64))) dijkstra_return( void );
 #else
 int dijkstra_return( void );
 #endif
+#ifdef PARTLY_FALIGN_FUNCTIONS
+int __attribute__((aligned(64))) dijkstra_enqueue( int node, int dist, int prev );
+#else
 int dijkstra_enqueue( int node, int dist, int prev );
+#endif
 void dijkstra_dequeue( int *node, int *dist, int *prev );
 int dijkstra_qcount( void );
 int dijkstra_find( int chStart, int chEnd );
@@ -111,7 +115,11 @@ int dijkstra_return( void )
   return ( ( dijkstra_checksum == 25 ) ? 0 : -1 );
 }
 
+#ifdef PARTLY_FALIGN_FUNCTIONS
+int __attribute__((aligned(64))) dijkstra_enqueue( int node, int dist, int prev )
+#else
 int dijkstra_enqueue( int node, int dist, int prev )
+#endif
 {
   struct _QITEM *newItem = &dijkstra_queueItems[ dijkstra_queueNext ];
   struct _QITEM *last = dijkstra_queueHead;
