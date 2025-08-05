@@ -73,7 +73,11 @@ int __attribute__((aligned(64))) rijndael_dec_return( void );
 int rijndael_dec_return( void );
 #endif
 void rijndael_dec_fillrand( unsigned char *buf, int len );
+#ifdef PARTLY_FALIGN_FUNCTIONS
+void __attribute__((aligned(64))) rijndael_dec_decfile( struct rijndael_dec_FILE *fin, struct aes *ctx );
+#else
 void rijndael_dec_decfile( struct rijndael_dec_FILE *fin, struct aes *ctx );
+#endif
 #ifdef PARTLY_FALIGN_FUNCTIONS
 void __attribute__((aligned(64))) rijndael_dec_main( void );
 #else
@@ -141,7 +145,11 @@ int rijndael_dec_return( void )
   return ( ( rijndael_dec_checksum == ( int )262180 ) ? 0 : -1 );
 }
 
+#ifdef PARTLY_FALIGN_FUNCTIONS
+void __attribute__((aligned(64))) rijndael_dec_decfile( struct rijndael_dec_FILE *fin, struct aes *ctx )
+#else
 void rijndael_dec_decfile( struct rijndael_dec_FILE *fin, struct aes *ctx )
+#endif
 {
   unsigned char inbuf1[ 16 ], inbuf2[ 16 ], outbuf[ 16 ], *bp1, *bp2, *tp;
   int           i;
