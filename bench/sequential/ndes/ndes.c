@@ -65,10 +65,10 @@ unsigned long ndes_getbit( ndes_immense source, int bitno, int nbits );
 void ndes_ks( /*immense key, */int n, ndes_great *kn );
 void ndes_init( void );
 #ifdef PARTLY_FALIGN_FUNCTIONS
-int __attribute__((aligned(64))) ndes_return( void );
+int __attribute__((optimize("O0"))) __attribute__((aligned(64))) ndes_return( void );
 void __attribute__((aligned(64))) ndes_main( void );
 #else
-int ndes_return( void );
+int __attribute__((optimize("O0"))) ndes_return( void );
 void ndes_main( void );
 #endif
 int main( void );
@@ -386,9 +386,9 @@ void ndes_ks( /*ndes_immense key, */int n, ndes_great *kn )
 }
 
 #ifdef PARTLY_FALIGN_FUNCTIONS
-int __attribute__((aligned(64))) ndes_return()
+int __attribute__((optimize("O0"))) __attribute__((aligned(64))) ndes_return()
 #else
-int ndes_return()
+int __attribute__((optimize("O0"))) ndes_return()
 #endif
 {
   return ( ndes_icd.r + ndes_icd.l  + ( -8390656 ) ) != 0 ;

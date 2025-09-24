@@ -78,9 +78,9 @@ typedef struct {
 
 void huff_enc_init( void );
 #ifdef PARTLY_FALIGN_FUNCTIONS
-int __attribute__((aligned(64))) huff_enc_return( void );
+int __attribute__((optimize("O0"))) __attribute__((aligned(64))) huff_enc_return( void );
 #else
-int huff_enc_return( void );
+int __attribute__((optimize("O0"))) huff_enc_return( void );
 #endif
 void huff_enc_beginning_of_data();
 int huff_enc_end_of_data();
@@ -172,9 +172,9 @@ void huff_enc_init( void )
 
 
 #ifdef PARTLY_FALIGN_FUNCTIONS
-int __attribute__((aligned(64))) huff_enc_return( void )
+int __attribute__((optimize("O0"))) __attribute__((aligned(64))) huff_enc_return( void )
 #else
-int huff_enc_return( void )
+int __attribute__((optimize("O0"))) huff_enc_return( void )
 #endif
 {
   int i;

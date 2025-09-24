@@ -63,10 +63,10 @@ int adpcm_dec_sin( int n );
 
 void adpcm_dec_init();
 #ifdef PARTLY_FALIGN_FUNCTIONS
-int __attribute__((aligned(64))) adpcm_dec_return();
+int __attribute__((optimize("O0"))) __attribute__((aligned(64))) adpcm_dec_return();
 void __attribute__((aligned(64))) adpcm_dec_main();
 #else
-int adpcm_dec_return();
+int __attribute__((optimize("O0"))) adpcm_dec_return();
 void adpcm_dec_main();
 #endif
 int main( void );
@@ -688,9 +688,9 @@ void adpcm_dec_init()
 }
 
 #ifdef PARTLY_FALIGN_FUNCTIONS
-int __attribute__((aligned(64))) adpcm_dec_return()
+int __attribute__((optimize("O0"))) __attribute__((aligned(64))) adpcm_dec_return()
 #else
-int adpcm_dec_return()
+int __attribute__((optimize("O0"))) adpcm_dec_return()
 #endif
 {
   int i;

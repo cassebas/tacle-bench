@@ -68,9 +68,9 @@ int rijndael_dec_checksum = 0;
 */
 void rijndael_dec_init( void );
 #ifdef PARTLY_FALIGN_FUNCTIONS
-int __attribute__((aligned(64))) rijndael_dec_return( void );
+int __attribute__((optimize("O0"))) __attribute__((aligned(64))) rijndael_dec_return( void );
 #else
-int rijndael_dec_return( void );
+int __attribute__((optimize("O0"))) rijndael_dec_return( void );
 #endif
 void rijndael_dec_fillrand( unsigned char *buf, int len );
 #ifdef PARTLY_FALIGN_FUNCTIONS
@@ -137,9 +137,9 @@ void rijndael_dec_init( void )
 }
 
 #ifdef PARTLY_FALIGN_FUNCTIONS
-int __attribute__((aligned(64))) rijndael_dec_return( void )
+int __attribute__((optimize("O0"))) __attribute__((aligned(64))) rijndael_dec_return( void )
 #else
-int rijndael_dec_return( void )
+int __attribute__((optimize("O0"))) rijndael_dec_return( void )
 #endif
 {
   return ( ( rijndael_dec_checksum == ( int )262180 ) ? 0 : -1 );

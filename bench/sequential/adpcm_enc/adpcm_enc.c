@@ -67,10 +67,10 @@ int adpcm_enc_abs( int n );
 void adpcm_enc_init( void );
 #ifdef PARTLY_FALIGN_FUNCTIONS
 void __attribute__((aligned(64))) adpcm_enc_main( void );
-int __attribute__((aligned(64))) adpcm_enc_return( void );
+int __attribute__((optimize("O0"))) __attribute__((aligned(64))) adpcm_enc_return( void );
 #else
 void adpcm_enc_main( void );
-int adpcm_enc_return( void );
+int __attribute__((optimize("O0"))) adpcm_enc_return( void );
 #endif
 int main( void );
 
@@ -735,9 +735,9 @@ void adpcm_enc_init( void )
 
 
 #ifdef PARTLY_FALIGN_FUNCTIONS
-int __attribute__((aligned(64))) adpcm_enc_return( void )
+int __attribute__((optimize("O0"))) __attribute__((aligned(64))) adpcm_enc_return( void )
 #else
-int adpcm_enc_return( void )
+int __attribute__((optimize("O0"))) adpcm_enc_return( void )
 #endif
 {
   int i;

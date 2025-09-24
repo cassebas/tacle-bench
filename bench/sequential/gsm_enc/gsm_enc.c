@@ -2208,9 +2208,9 @@ void gsm_enc_init( void )
 }
 
 #ifdef PARTLY_FALIGN_FUNCTIONS
-int __attribute__((aligned(64))) gsm_enc_return( void )
+int __attribute__((optimize("O0"))) __attribute__((aligned(64))) gsm_enc_return( void )
 #else
-int gsm_enc_return( void )
+int __attribute__((optimize("O0"))) gsm_enc_return( void )
 #endif
 {
   return gsm_enc_result;

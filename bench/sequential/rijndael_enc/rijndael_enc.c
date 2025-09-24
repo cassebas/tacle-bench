@@ -68,9 +68,9 @@ int rijndael_enc_checksum = 0;
 */
 void rijndael_enc_init( void );
 #ifdef PARTLY_FALIGN_FUNCTIONS
-int __attribute__((aligned(64))) rijndael_enc_return( void );
+int __attribute__((optimize("O0"))) __attribute__((aligned(64))) rijndael_enc_return( void );
 #else
-int rijndael_enc_return( void );
+int __attribute__((optimize("O0"))) rijndael_enc_return( void );
 #endif
 void rijndael_enc_fillrand( unsigned char *buf, int len );
 void rijndael_enc_encfile( struct rijndael_enc_FILE *fin, struct aes *ctx );
@@ -133,9 +133,9 @@ void rijndael_enc_init( void )
 }
 
 #ifdef PARTLY_FALIGN_FUNCTIONS
-int __attribute__((aligned(64))) rijndael_enc_return( void )
+int __attribute__((optimize("O0"))) __attribute__((aligned(64))) rijndael_enc_return( void )
 #else
-int rijndael_enc_return( void )
+int __attribute__((optimize("O0"))) rijndael_enc_return( void )
 #endif
 {
   return ( ( rijndael_enc_checksum == ( int )249509 ) ? 0 : -1 );

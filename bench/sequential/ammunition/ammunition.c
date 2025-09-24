@@ -52,10 +52,10 @@ int ammunition_bits_test();
 int ammunition_arithm_test();
 void ammunition_init( void );
 #ifdef PARTLY_FALIGN_FUNCTIONS
-int __attribute__((aligned(64))) ammunition_return( void );
+int __attribute__((optimize("O0"))) __attribute__((aligned(64))) ammunition_return( void );
 void __attribute__((aligned(64))) ammunition_main( void );
 #else
-int ammunition_return( void );
+int __attribute__((optimize("O0"))) ammunition_return( void );
 void ammunition_main( void );
 #endif
 int main( void );
@@ -1171,9 +1171,9 @@ void ammunition_init( void )
 }
 
 #ifdef PARTLY_FALIGN_FUNCTIONS
-int __attribute__((aligned(64))) ammunition_return( void )
+int __attribute__((optimize("O0"))) __attribute__((aligned(64))) ammunition_return( void )
 #else
-int ammunition_return( void )
+int __attribute__((optimize("O0"))) ammunition_return( void )
 #endif
 {
   return ammunition_result;

@@ -45,9 +45,9 @@
 
 void h264_dec_init ();
 #ifdef PARTLY_FALIGN_FUNCTIONS
-int __attribute__((aligned(64))) h264_dec_return ();
+int __attribute__((optimize("O0"))) __attribute__((aligned(64))) h264_dec_return ();
 #else
-int h264_dec_return ();
+int __attribute__((optimize("O0"))) h264_dec_return ();
 #endif
 void h264_dec_decode_one_macroblock( struct h264_dec_img_par *img );
 #ifdef PARTLY_FALIGN_FUNCTIONS
@@ -76,9 +76,9 @@ struct h264_dec_img_par h264_dec_img;
 */
 
 #ifdef PARTLY_FALIGN_FUNCTIONS
-int __attribute__((aligned(64))) h264_dec_return ()
+int __attribute__((optimize("O0"))) __attribute__((aligned(64))) h264_dec_return ()
 #else
-int h264_dec_return ()
+int __attribute__((optimize("O0"))) h264_dec_return ()
 #endif
 {
   return ( h264_dec_img_mpr[ 0 ][ 0 ] + h264_dec_dec_picture_imgUV[ 0 ][ 0 ][ 0 ] + 128 !=

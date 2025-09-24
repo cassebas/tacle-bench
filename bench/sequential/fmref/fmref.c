@@ -82,9 +82,9 @@ void fmref_init( void )
 }
 
 #ifdef PARTLY_FALIGN_FUNCTIONS
-int __attribute__((aligned(64))) fmref_return( void )
+int __attribute__((optimize("O0"))) __attribute__((aligned(64))) fmref_return( void )
 #else
-int fmref_return( void )
+int __attribute__((optimize("O0"))) fmref_return( void )
 #endif
 {
   // dummy return value

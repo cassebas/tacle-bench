@@ -44,10 +44,10 @@
 
 void audiobeam_init();
 #ifdef PARTLY_FALIGN_FUNCTIONS
-int __attribute__((aligned(64))) audiobeam_return();
+int __attribute__((optimize("O0"))) __attribute__((aligned(64))) audiobeam_return();
 void __attribute__((aligned(64))) audiobeam_main( void );
 #else
-int audiobeam_return();
+int __attribute__((optimize("O0"))) audiobeam_return();
 void audiobeam_main( void );
 #endif
 int main( void );
@@ -146,9 +146,9 @@ void audiobeam_init()
 
 
 #ifdef PARTLY_FALIGN_FUNCTIONS
-int __attribute__((aligned(64))) audiobeam_return()
+int __attribute__((optimize("O0"))) __attribute__((aligned(64))) audiobeam_return()
 #else
-int audiobeam_return()
+int __attribute__((optimize("O0"))) audiobeam_return()
 #endif
 {
   return ( audiobeam_checksum + 1 != 0 );

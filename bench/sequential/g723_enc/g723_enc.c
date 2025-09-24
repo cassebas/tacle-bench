@@ -115,10 +115,10 @@ int g723_enc_pack_output(
 
 void g723_enc_init();
 #ifdef PARTLY_FALIGN_FUNCTIONS
-int __attribute__((aligned(64))) g723_enc_return();
+int __attribute__((optimize("O0"))) __attribute__((aligned(64))) g723_enc_return();
 void __attribute__((aligned(64))) g723_enc_main();
 #else
-int g723_enc_return();
+int __attribute__((optimize("O0"))) g723_enc_return();
 void g723_enc_main();
 #endif
 int main( void );
@@ -839,9 +839,9 @@ void g723_enc_init()
 
 
 #ifdef PARTLY_FALIGN_FUNCTIONS
-int __attribute__((aligned(64))) g723_enc_return()
+int __attribute__((optimize("O0"))) __attribute__((aligned(64))) g723_enc_return()
 #else
-int g723_enc_return()
+int __attribute__((optimize("O0"))) g723_enc_return()
 #endif
 {
   int i;

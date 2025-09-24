@@ -69,9 +69,9 @@ int dijkstra_checksum = 0;
 */
 void dijkstra_init( void );
 #ifdef PARTLY_FALIGN_FUNCTIONS
-int __attribute__((aligned(64))) dijkstra_return( void );
+int __attribute__((optimize("O0"))) __attribute__((aligned(64))) dijkstra_return( void );
 #else
-int dijkstra_return( void );
+int __attribute__((optimize("O0"))) dijkstra_return( void );
 #endif
 #ifdef PARTLY_FALIGN_FUNCTIONS
 int __attribute__((aligned(64))) dijkstra_enqueue( int node, int dist, int prev );
@@ -107,9 +107,9 @@ void dijkstra_init( void )
 }
 
 #ifdef PARTLY_FALIGN_FUNCTIONS
-int __attribute__((aligned(64))) dijkstra_return( void )
+int __attribute__((optimize("O0"))) __attribute__((aligned(64))) dijkstra_return( void )
 #else
-int dijkstra_return( void )
+int __attribute__((optimize("O0"))) dijkstra_return( void )
 #endif
 {
   return ( ( dijkstra_checksum == 25 ) ? 0 : -1 );

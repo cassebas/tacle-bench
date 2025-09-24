@@ -78,9 +78,9 @@ typedef struct {
 
 void huff_dec_init( void );
 #ifdef PARTLY_FALIGN_FUNCTIONS
-int __attribute__((aligned(64))) huff_dec_return( void );
+int __attribute__((optimize("O0"))) __attribute__((aligned(64))) huff_dec_return( void );
 #else
-int huff_dec_return( void );
+int __attribute__((optimize("O0"))) huff_dec_return( void );
 #endif
 int huff_dec_end_of_data();
 int huff_dec_read_byte();
@@ -164,9 +164,9 @@ void huff_dec_init( void )
 
 
 #ifdef PARTLY_FALIGN_FUNCTIONS
-int __attribute__((aligned(64))) huff_dec_return( void )
+int __attribute__((optimize("O0"))) __attribute__((aligned(64))) huff_dec_return( void )
 #else
-int huff_dec_return( void )
+int __attribute__((optimize("O0"))) huff_dec_return( void )
 #endif
 {
   int i;

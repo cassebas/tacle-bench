@@ -622,9 +622,9 @@ void gsm_dec_init( void )
 }
 
 #ifdef PARTLY_FALIGN_FUNCTIONS
-int __attribute__((aligned(64))) gsm_dec_return( void )
+int __attribute__((optimize("O0"))) __attribute__((aligned(64))) gsm_dec_return( void )
 #else
-int gsm_dec_return( void )
+int __attribute__((optimize("O0"))) gsm_dec_return( void )
 #endif
 {
   return gsm_dec_result;

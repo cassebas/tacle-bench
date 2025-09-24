@@ -51,10 +51,10 @@ int petrinet_main_iters_dummy_i = 0,
 */
 void petrinet_init( void );
 #ifdef PARTLY_FALIGN_FUNCTIONS
-int __attribute__((aligned(64))) petrinet_return( void );
+int __attribute__((optimize("O0"))) __attribute__((aligned(64))) petrinet_return( void );
 void __attribute__((aligned(64))) petrinet_main( void );
 #else
-int petrinet_return( void );
+int __attribute__((optimize("O0"))) petrinet_return( void );
 void petrinet_main( void );
 #endif
 int main( void );
@@ -972,9 +972,9 @@ void petrinet_init( void )
 
 
 #ifdef PARTLY_FALIGN_FUNCTIONS
-int __attribute__((aligned(64))) petrinet_return( void )
+int __attribute__((optimize("O0"))) __attribute__((aligned(64))) petrinet_return( void )
 #else
-int petrinet_return( void )
+int __attribute__((optimize("O0"))) petrinet_return( void )
 #endif
 {
   // TODO: use something from the Px_... arrays

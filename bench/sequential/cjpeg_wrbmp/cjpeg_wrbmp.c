@@ -82,10 +82,10 @@ int cjpeg_wrbmp_putc_modified( int character );
 void cjpeg_wrbmp_init();
 #ifdef PARTLY_FALIGN_FUNCTIONS
 void __attribute__((aligned(64))) cjpeg_wrbmp_main();
-int __attribute__((aligned(64))) cjpeg_wrbmp_return();
+int __attribute__((optimize("O0"))) __attribute__((aligned(64))) cjpeg_wrbmp_return();
 #else
 void cjpeg_wrbmp_main();
-int cjpeg_wrbmp_return();
+int __attribute__((optimize("O0"))) cjpeg_wrbmp_return();
 #endif
 int main();
 
@@ -223,9 +223,9 @@ void _Pragma( "entrypoint" ) cjpeg_wrbmp_main()
 }
 
 #ifdef PARTLY_FALIGN_FUNCTIONS
-int __attribute__((aligned(64))) cjpeg_wrbmp_return()
+int __attribute__((optimize("O0"))) __attribute__((aligned(64))) cjpeg_wrbmp_return()
 #else
-int cjpeg_wrbmp_return()
+int __attribute__((optimize("O0"))) cjpeg_wrbmp_return()
 #endif
 {
   return ( cjpeg_wrbmp_checksum  + ( -209330 ) ) != 0;

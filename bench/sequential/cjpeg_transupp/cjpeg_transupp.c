@@ -51,9 +51,9 @@ void cjpeg_transupp_initSeed( void );
 signed char cjpeg_transupp_randomInteger( void );
 void cjpeg_transupp_init( void );
 #ifdef PARTLY_FALIGN_FUNCTIONS
-int __attribute__((aligned(64))) cjpeg_transupp_return( void );
+int __attribute__((optimize("O0"))) __attribute__((aligned(64))) cjpeg_transupp_return( void );
 #else
-int cjpeg_transupp_return( void );
+int __attribute__((optimize("O0"))) cjpeg_transupp_return( void );
 #endif
 void cjpeg_transupp_do_flip_v( j_compress_ptr );
 void cjpeg_transupp_do_rot_90( j_compress_ptr );
@@ -154,9 +154,9 @@ void cjpeg_transupp_init( void )
 
 
 #ifdef PARTLY_FALIGN_FUNCTIONS
-int __attribute__((aligned(64))) cjpeg_transupp_return( void )
+int __attribute__((optimize("O0"))) __attribute__((aligned(64))) cjpeg_transupp_return( void )
 #else
-int cjpeg_transupp_return( void )
+int __attribute__((optimize("O0"))) cjpeg_transupp_return( void )
 #endif
 {
   int checksum = 0;

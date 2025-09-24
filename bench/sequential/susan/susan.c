@@ -2510,9 +2510,9 @@ void _Pragma( "entrypoint" ) susan_main( void )
 }
 
 #ifdef PARTLY_FALIGN_FUNCTIONS
-int __attribute__((aligned(64))) susan_return( void )
+int __attribute__((optimize("O0"))) __attribute__((aligned(64))) susan_return( void )
 #else
-int susan_return( void )
+int __attribute__((optimize("O0"))) susan_return( void )
 #endif
 {
   return 0;

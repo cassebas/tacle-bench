@@ -80,10 +80,10 @@ void statemate_generic_BLOCK_ERKENNUNG_CTRL( void );
 void statemate_FH_DU( void );
 #ifdef PARTLY_FALIGN_FUNCTIONS
 void __attribute__((aligned(64))) statemate_main( void );
-int __attribute__((aligned(64))) statemate_return ( void );
+int __attribute__((optimize("O0"))) __attribute__((aligned(64))) statemate_return ( void );
 #else
 void statemate_main( void );
-int statemate_return ( void );
+int __attribute__((optimize("O0"))) statemate_return ( void );
 #endif
 
 
@@ -1270,9 +1270,9 @@ void statemate_FH_DU( void )
 */
 
 #ifdef PARTLY_FALIGN_FUNCTIONS
-int __attribute__((aligned(64))) statemate_return()
+int __attribute__((optimize("O0"))) __attribute__((aligned(64))) statemate_return()
 #else
-int statemate_return()
+int __attribute__((optimize("O0"))) statemate_return()
 #endif
 {
   unsigned long int checksum = 0;

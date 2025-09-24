@@ -68,9 +68,9 @@ struct mbinfo;
 
 void mpeg2_init( void );
 #ifdef PARTLY_FALIGN_FUNCTIONS
-int __attribute__((aligned(64))) mpeg2_return( void );
+int __attribute__((optimize("O0"))) __attribute__((aligned(64))) mpeg2_return( void );
 #else
-int mpeg2_return( void );
+int __attribute__((optimize("O0"))) mpeg2_return( void );
 #endif
 void mpeg2_motion_estimation( unsigned char *, unsigned char *, unsigned char *,
                               unsigned char *, unsigned char *, unsigned char *,
@@ -11429,9 +11429,9 @@ void mpeg2_init( void )
 
 
 #ifdef PARTLY_FALIGN_FUNCTIONS
-int __attribute__((aligned(64))) mpeg2_return( void )
+int __attribute__((optimize("O0"))) __attribute__((aligned(64))) mpeg2_return( void )
 #else
-int mpeg2_return( void )
+int __attribute__((optimize("O0"))) mpeg2_return( void )
 #endif
 {
   int checksum = 0;
