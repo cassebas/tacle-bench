@@ -22,6 +22,19 @@
 
 */
 
+#include <stdint.h>
+#include "kprintf.h"
+
+#ifndef RISCV_CORE_CONFIG
+#define RISCV_CORE_CONFIG "rv32_i4k_d4k"
+#endif
+
+// The reset control register allows us to signal a CPU reset
+#define RESET_CONTROL_ADDR 0x6004000
+
+
+#define BOOTDEVICE_ADDR    0x6005000   // Addres of the mmio boot device
+#define BOOTDEVICE_BOOTNUM 0x200       // Offset to the bootnum parameter
 
 /*
   Forward declaration of functions
@@ -38,7 +51,7 @@ int bsort_BubbleSort( int Array[] );
   Declaration of global variables
 */
 
-#define bsort_SIZE 100
+#define bsort_SIZE 10
 
 static int bsort_Array[ bsort_SIZE ];
 
@@ -125,8 +138,34 @@ void _Pragma( "entrypoint" ) bsort_main( void )
 
 int main( void )
 {
+  uintptr_t cycles1, cycles2, cycles3;
+
+  volatile uint32_t *reset_ctrl_reg = (uint32_t *) RESET_CONTROL_ADDR;
+  *reset_ctrl_reg = 0;
+
+  // The 'constant' boot_num (changed by the program on each run),
+  // tells us how many times we have booted. It is a constant present
+  // in the binary boot.elf, but since we have the binary in the block
+  // ram, we can alter its contents.
+  volatile uint32_t *boot_memory = (uint32_t *) BOOTDEVICE_ADDR;
+  volatile uint32_t boot_num = boot_memory[BOOTDEVICE_BOOTNUM];
+  kprintf("Bootnum:%d ", boot_num);
+  // Put the new 'constant' in the block ram where the boot.elf binary resides
+  boot_num++;
+  boot_memory[BOOTDEVICE_BOOTNUM] = boot_num;
+
+  asm volatile ("csrr %0, mcycle" : "=r" (cycles1));
   bsort_init();
+  asm volatile ("csrr %0, mcycle" : "=r" (cycles2));
   bsort_main();
+  asm volatile ("csrr %0, mcycle" : "=r" (cycles3));
+
+  kprintf("boot number = %s\n", boot_num);
+  kprintf("cycles spent in bsort::bsort_init = %ld\n", cycles2 - cycles1);
+  kprintf("cycles spent in bsort::bsort_main = %ld\n", cycles3 - cycles2);
+
+  // Set the reset control register to all ones, signalling CPU reset.
+  *reset_ctrl_reg = 0xffffffff;
 
   return bsort_return();
 }
