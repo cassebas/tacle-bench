@@ -34,7 +34,7 @@
 
 
 #define BOOTDEVICE_ADDR    0x6005000   // Addres of the mmio boot device
-#define BOOTDEVICE_BOOTNUM 0x200       // Offset to the bootnum parameter
+#define BOOTDEVICE_BOOTNUM 0xF00       // Offset to the bootnum parameter
 
 /*
   Forward declaration of functions
