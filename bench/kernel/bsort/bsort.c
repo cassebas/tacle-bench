@@ -149,7 +149,6 @@ int main( void )
   // ram, we can alter its contents.
   volatile uint32_t *boot_memory = (uint32_t *) BOOTDEVICE_ADDR;
   volatile uint32_t boot_num = boot_memory[BOOTDEVICE_BOOTNUM];
-  kprintf("Bootnum:%d ", boot_num);
   // Put the new 'constant' in the block ram where the boot.elf binary resides
   boot_num++;
   boot_memory[BOOTDEVICE_BOOTNUM] = boot_num;
