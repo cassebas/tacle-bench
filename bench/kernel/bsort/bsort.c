@@ -158,9 +158,9 @@ int main( void )
   bsort_main();
   asm volatile ("csrr %0, mcycle" : "=r" (cycles3));
 
-  kprintf("boot number = %s\n", boot_num);
-  kprintf("cycles spent in bsort::bsort_init = %ld\n", cycles2 - cycles1);
-  kprintf("cycles spent in bsort::bsort_main = %ld\n", cycles3 - cycles2);
+  kprintf("bootnum=%d ", boot_num);
+  kprintf("cycles bsort::bsort_init=%ld ", cycles2 - cycles1);
+  kprintf("cycles bsort::bsort_main=%ld\n", cycles3 - cycles2);
 
   // Set the reset control register to all ones, signalling CPU reset.
   *reset_ctrl_reg = 0xffffffff;
