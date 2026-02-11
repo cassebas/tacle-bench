@@ -50,7 +50,7 @@ int bsort_BubbleSort( int Array[] );
   Declaration of global variables
 */
 
-#define bsort_SIZE 10
+#define bsort_SIZE 16
 
 static int bsort_Array[ bsort_SIZE ];
 
