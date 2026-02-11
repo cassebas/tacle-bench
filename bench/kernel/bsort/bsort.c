@@ -30,11 +30,10 @@
 #endif
 
 // The reset control register allows us to signal a CPU reset
-#define RESET_CONTROL_ADDR 0x6004000
+#define RESET_CONTROL_ADDR 0x60040000
 
-
-#define BOOTDEVICE_ADDR    0x6005000   // Addres of the mmio boot device
-#define BOOTDEVICE_BOOTNUM 0xF00       // Offset to the bootnum parameter
+#define BOOTDEVICE_ADDR    0x60050000  // Addres of the mmio boot device
+#define BOOTDEVICE_BOOTNUM 0x0000F000  // Offset to the bootnum parameter
 
 /*
   Forward declaration of functions
