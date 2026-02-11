@@ -33,7 +33,7 @@
 #define RESET_CONTROL_ADDR 0x60040000
 
 #define BOOTDEVICE_ADDR    0x60050000  // Addres of the mmio boot device
-#define BOOTDEVICE_BOOTNUM 0x0000F000  // Offset to the bootnum parameter
+#define BOOTDEVICE_BOOTNUM 0x00003F00  // Offset to the bootnum parameter
 
 /*
   Forward declaration of functions
