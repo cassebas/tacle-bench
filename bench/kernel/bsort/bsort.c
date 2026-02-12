@@ -154,7 +154,7 @@ void _Pragma( "entrypoint" ) bsort_main( void )
 
 int main( void )
 {
-  uintptr_t cycles1, cycles2, cycles3;
+  uintptr_t cycles1, cycles2;
 
   volatile uint32_t *reset_ctrl_reg = (uint32_t *) RESET_CONTROL_ADDR;
   *reset_ctrl_reg = 0;
@@ -169,15 +169,26 @@ int main( void )
   boot_num++;
   boot_memory[BOOTDEVICE_BOOTNUM] = boot_num;
 
-  asm volatile ("csrr %0, mcycle" : "=r" (cycles1));
   bsort_init();
-  asm volatile ("csrr %0, mcycle" : "=r" (cycles2));
+
+  kprintf("bsort unsorted input is : ");
+  for (int i=0; i<bsort_SIZE; i++) {
+    kprintf("%d ", bsort_Array[i]);
+  }
+  kprintf("\n");
+
+  asm volatile ("csrr %0, mcycle" : "=r" (cycles1));
   bsort_main();
-  asm volatile ("csrr %0, mcycle" : "=r" (cycles3));
+  asm volatile ("csrr %0, mcycle" : "=r" (cycles2));
+
+  kprintf("bsort sorted input is : ");
+  for (int i=0; i<bsort_SIZE; i++) {
+    kprintf("%d ", bsort_Array[i]);
+  }
+  kprintf("\n");
 
   kprintf("bootnum=%d ", boot_num);
-  kprintf("cycles bsort::bsort_init=%ld ", cycles2 - cycles1);
-  kprintf("cycles bsort::bsort_main=%ld\n", cycles3 - cycles2);
+  kprintf("cycles bsort::bsort_main=%ld\n", cycles2 - cycles1);
 
   // Set the reset control register to all ones, signalling CPU reset.
   *reset_ctrl_reg = 0xffffffff;
