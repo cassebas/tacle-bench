@@ -52,7 +52,24 @@ int bsort_BubbleSort( int Array[] );
 
 #define bsort_SIZE 16
 
-static int bsort_Array[ bsort_SIZE ];
+static int bsort_Array[ bsort_SIZE ] = {
+  -1,
+  -2,
+  -3,
+  -4,
+  -5,
+  -6,
+  -7,
+  -8,
+  -9,
+  -10,
+  -11,
+  -12,
+  -13,
+  -14,
+  -15,
+  -16,
+};
 
 
 /*
@@ -62,11 +79,11 @@ static int bsort_Array[ bsort_SIZE ];
 /* Initializes given array with randomly generated integers. */
 int bsort_Initialize( int Array[] )
 {
-  int Index;
+  /* int Index; */
 
-  _Pragma( "loopbound min 100 max 100" )
-  for ( Index = 0; Index < bsort_SIZE; Index ++ )
-    Array[ Index ] = ( Index + 1 ) * -1;
+  /* _Pragma( "loopbound min 100 max 100" ) */
+  /* for ( Index = 0; Index < bsort_SIZE; Index ++ ) */
+  /*   Array[ Index ] = ( Index + 1 ) * -1; */
 
   return 0;
 }
