@@ -174,34 +174,18 @@ int main( void )
   // in the binary boot.elf, but since we have the binary in the block
   // ram, we can alter its contents.
   volatile uint32_t *boot_memory = (uint32_t *) BOOTDEVICE_ADDR;
-  volatile uint32_t boot_num = boot_memory[BOOTDEVICE_BOOTNUM];
-  // Put the new 'constant' in the block ram where the boot.elf binary resides
-  boot_num++;
-  boot_memory[BOOTDEVICE_BOOTNUM] = boot_num;
+  volatile uint32_t boot_num = ++boot_memory[BOOTDEVICE_BOOTNUM];
 
   bsort_init();
-
-  kprintf("bsort unsorted input is : ");
-  for (int i=0; i<bsort_SIZE; i++) {
-    kprintf("%d ", bsort_Array[i]);
-  }
-  kprintf("\n");
-
   asm volatile ("csrr %0, mcycle" : "=r" (cycles1));
   bsort_main();
   asm volatile ("csrr %0, mcycle" : "=r" (cycles2));
 
-  kprintf("bsort sorted input is : ");
-  for (int i=0; i<bsort_SIZE; i++) {
-    kprintf("%d ", bsort_Array[i]);
-  }
-  kprintf("\n");
-
   kprintf("bootnum=%d ", boot_num);
   kprintf("cycles bsort::bsort_main=%ld\n", cycles2 - cycles1);
 
-  // Wait 10ms for the UART buffers to be flushed
-  usleep(10000);
+  // Wait a bit for the UART buffers to be flushed
+  usleep(2000);
 
   // Set the reset control register to all ones, signalling CPU reset.
   *reset_ctrl_reg = 0xffffffff;
