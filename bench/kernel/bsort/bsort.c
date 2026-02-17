@@ -45,6 +45,16 @@ int bsort_return( void );
 int bsort_Initialize( int Array[] );
 int bsort_BubbleSort( int Array[] );
 
+static void usleep(unsigned us) {
+  uintptr_t cycles0, cycles1;
+
+  asm volatile("csrr %0, mcycle" : "=r" (cycles0));
+  for (;;) {
+    asm volatile("csrr %0, mcycle" : "=r" (cycles1));
+    if (cycles1 - cycles0 >= us * 100)
+      break;
+  }
+}
 
 /*
   Declaration of global variables
@@ -189,6 +199,9 @@ int main( void )
 
   kprintf("bootnum=%d ", boot_num);
   kprintf("cycles bsort::bsort_main=%ld\n", cycles2 - cycles1);
+
+  // Wait 10ms for the UART buffers to be flushed
+  usleep(10000);
 
   // Set the reset control register to all ones, signalling CPU reset.
   *reset_ctrl_reg = 0xffffffff;
