@@ -177,9 +177,21 @@ int main( void )
   volatile uint32_t boot_num = ++boot_memory[BOOTDEVICE_BOOTNUM];
 
   bsort_init();
+  kprintf("bsort unsorted input is : ");
+  for (int i=0; i<bsort_SIZE; i++) {
+    kprintf("%d ", bsort_Array[i]);
+  }
+  kprintf("\n");
+
   asm volatile ("csrr %0, mcycle" : "=r" (cycles1));
   bsort_main();
   asm volatile ("csrr %0, mcycle" : "=r" (cycles2));
+
+  kprintf("bsort sorted input is : ");
+  for (int i=0; i<bsort_SIZE; i++) {
+    kprintf("%d ", bsort_Array[i]);
+  }
+  kprintf("\n");
 
   kprintf("bootnum=%d ", boot_num);
   kprintf("cycles bsort::bsort_main=%ld\n", cycles2 - cycles1);
