@@ -197,10 +197,11 @@ int main( void )
   // the reset will eventually happen
   while (1) {
     // Set the reset control register to all ones, signalling CPU reset.
+    kprintf(".");
     *reset_ctrl_reg = 0xffffffff;
 
     // Wait a bit before trying again
-    usleep(10000);
+    usleep(100000);
   }
 
   // The return statement will never be reached, but we'll keep it here anyway
