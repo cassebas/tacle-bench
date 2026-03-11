@@ -193,8 +193,16 @@ int main( void )
   // Wait a bit for the UART buffers to be flushed
   usleep(2000);
 
-  // Set the reset control register to all ones, signalling CPU reset.
-  *reset_ctrl_reg = 0xffffffff;
+  // Perform the reset, repeatedly in a while loop to make sure
+  // the reset will eventually happen
+  while (1) {
+    // Set the reset control register to all ones, signalling CPU reset.
+    *reset_ctrl_reg = 0xffffffff;
 
+    // Wait a bit before trying again
+    usleep(10000);
+  }
+
+  // The return statement will never be reached, but we'll keep it here anyway
   return bsort_return();
 }
