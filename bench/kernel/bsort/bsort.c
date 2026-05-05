@@ -60,7 +60,7 @@ static void usleep(unsigned us) {
   Declaration of global variables
 */
 
-#define bsort_SIZE 8
+#define bsort_SIZE 10
 
 static int bsort_Array[ bsort_SIZE ] = {
   -1,
@@ -71,6 +71,8 @@ static int bsort_Array[ bsort_SIZE ] = {
   -6,
   -7,
   -8,
+  -9,
+  -10,
 };
 
 
